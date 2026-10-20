@@ -7,3 +7,7 @@
 .footer-logo-image{display:block;width:220px;max-width:100%;max-height:70px;height:auto;object-fit:contain;object-position:left center}
 .site-footer{border-top:1px solid var(--line);margin-top:44px}
 @media(max-width:560px){.brand-logo-image{width:clamp(135px,42vw,185px);max-height:48px}.brand{min-height:42px}.footer-logo-image{width:190px;max-height:62px}}
+
+/* Minimal footer: parody notice only */
+.site-footer{padding:18px 0 24px;margin-top:44px;border-top:1px solid var(--line)}
+.site-footer .parody-notice{display:block!important;width:max-content;max-width:100%;margin:0!important;padding:0!important;border:0!important;color:#555!important;font-size:11px!important;font-weight:700!important}
