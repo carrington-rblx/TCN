@@ -19,3 +19,31 @@ function renderSearch(query){if(!searchResults)return;const q=query.trim().toLoc
 if(searchInput)searchInput.addEventListener('input',()=>renderSearch(searchInput.value));const searchForm=document.getElementById('searchForm');if(searchForm)searchForm.addEventListener('submit',e=>{e.preventDefault();renderSearch(searchInput?.value||'');});
 const dateEl=document.getElementById('today');if(dateEl)dateEl.textContent=new Intl.DateTimeFormat('en-US',{weekday:'long',month:'short',day:'numeric',year:'numeric'}).format(new Date()).toUpperCase();
 const newsletterForm=document.getElementById('newsletterForm');if(newsletterForm)newsletterForm.addEventListener('submit',e=>{e.preventDefault();const note=document.getElementById('formNote');if(note)note.textContent='Thanks for your interest! This is a demo; no email address has been saved.';});
+/* Interactive election results archive */
+const electionCategoryButtons=[...document.querySelectorAll('[data-election-category]')];
+const archivePanels=[...document.querySelectorAll('[data-archive]')];
+const electionDetails=[...document.querySelectorAll('.election-detail')];
+const archiveTitle=document.getElementById('selected-election-title');
+const archiveCount=document.getElementById('archive-count');
+const categoryTitles={presidential:'Presidential Elections',house:'House Elections',senate:'Senate Elections',board:'Board Elections',leadership:'Party Leadership'};
+function showElectionCategory(category){
+ electionCategoryButtons.forEach(button=>{const active=button.dataset.electionCategory===category;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
+ archivePanels.forEach(panel=>{panel.hidden=panel.dataset.archive!==category;});
+ electionDetails.forEach(detail=>detail.hidden=true);
+ if(archiveTitle)archiveTitle.textContent=categoryTitles[category]||'Election Results';
+ const activePanel=archivePanels.find(panel=>panel.dataset.archive===category);
+ const count=activePanel?activePanel.querySelectorAll('[data-show-result]').length:0;
+ if(archiveCount)archiveCount.textContent=count+' '+(count===1?'result':'results');
+ const list=document.querySelector('.election-archive-list');if(list)list.hidden=false;
+}
+electionCategoryButtons.forEach(button=>button.addEventListener('click',()=>showElectionCategory(button.dataset.electionCategory)));
+document.querySelectorAll('[data-show-result]').forEach(button=>button.addEventListener('click',()=>{
+ const id='result-'+button.dataset.showResult;
+ electionDetails.forEach(detail=>detail.hidden=detail.id!==id);
+ const list=document.querySelector('.election-archive-list');if(list)list.hidden=true;
+}));
+document.querySelectorAll('[data-back-archive]').forEach(button=>button.addEventListener('click',()=>{
+ electionDetails.forEach(detail=>detail.hidden=true);
+ const list=document.querySelector('.election-archive-list');if(list)list.hidden=false;
+}));
+showElectionCategory('presidential');
