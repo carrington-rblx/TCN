@@ -142,7 +142,16 @@ async function saveElection(publish){
  if(!payload.title||!payload.candidates.length){showMessage("Add an election title and at least one candidate or list.","error");return;}
  const result=id?await supabase.from("newsroom_elections").update(payload).eq("id",id).select().single():await supabase.from("newsroom_elections").insert(payload).select().single();
  if(result.error){showMessage(result.error.message,"error");return;}
- showMessage(publish?"Election results published. They will appear on TCN after the next hourly publishing run.":"Election results saved as a private draft.","success");resetElectionForm();await refreshData();
+ if(publish){
+  try{
+   const {data:{session}}=await supabase.auth.getSession();
+   const response=await fetch(cfg.supabaseUrl+"/functions/v1/publish-now",{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.supabasePublishableKey,"Authorization":"Bearer "+(session?.access_token||"")},body:JSON.stringify({election_id:result.data.id})});
+   const outcome=await response.json().catch(()=>({error:"Unexpected server response."}));
+   if(!response.ok)throw new Error(outcome.error||"Could not start election publishing.");
+   showMessage("Election results published and the site publishing workflow has been triggered. The live page may take a few minutes to update.","success");
+  }catch(error){showMessage(error.message||"Election results saved, but publishing could not be triggered.","error");resetElectionForm();await refreshData();return;}
+ }else showMessage("Election results saved as a private draft.","success");
+ resetElectionForm();await refreshData();
 }
 function renderElections(){
  const root=$("nr-election-list");if(!root)return;
