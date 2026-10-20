@@ -225,4 +225,9 @@ $("nr-signout").addEventListener("click",async()=>{await supabase?.auth.signOut(
 $("nr-refresh").addEventListener("click",refreshData);
 if($("nr-cancel-edit"))$("nr-cancel-edit").classList.add("nr-hidden");
 if($("nr-election-cancel"))$("nr-election-cancel").classList.add("nr-hidden");
-if(supabase){supabase.auth.onAuthStateChange(()=>{setTimeout(()=>refreshSession(),0);});refreshSession().catch(e=>showMessage(e.message,"error"));}
+if(supabase){
+ supabase.auth.onAuthStateChange(()=>{setTimeout(()=>refreshSession(),0);});
+ refreshSession().catch(e=>showMessage(e.message,"error"));
+ supabase.channel("tcn-newsroom-election-live").on("postgres_changes",{event:"*",schema:"public",table:"newsroom_elections"},()=>{if(currentUser&&isEditor())refreshData();}).subscribe();
+ window.setInterval(()=>{if(currentUser&&!document.hidden)refreshData();},15000);
+}
