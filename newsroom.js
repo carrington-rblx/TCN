@@ -11,6 +11,10 @@ else showMessage("Setup required: add your Supabase project URL and publishable 
 function showMessage(text, type="") { if (!message) return; message.textContent = text; message.className = "nr-notice" + (type ? " " + type : ""); }
 function clearMessage(){ if(message){message.textContent="";message.className="nr-notice nr-hidden";} }
 function escapeText(v){ return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const ARTICLE_AREAS=["Top Stories","Politics","World","Elections"];
+function articleAreas(article){const values=Array.isArray(article?.categories)?article.categories.filter(x=>ARTICLE_AREAS.includes(x)):[];if(!values.length&&ARTICLE_AREAS.includes(article?.category))values.push(article.category);return [...new Set(values)];}
+function selectedArticleAreas(){return [...document.querySelectorAll('input[name="article-area"]:checked')].map(input=>input.value);}
+function setArticleAreas(values){const selected=Array.isArray(values)&&values.length?values:["Top Stories"];document.querySelectorAll('input[name="article-area"]').forEach(input=>input.checked=selected.includes(input.value));}
 function isEditor(){ return ["editor","admin"].includes(String(currentUser?.app_metadata?.role || "")); }
 function activeTab(name){
  document.querySelectorAll("[data-panel]").forEach(p=>p.classList.toggle("nr-hidden",p.dataset.panel!==name));
@@ -52,7 +56,7 @@ function renderMyArticles(){
  const root=$("nr-my-articles"); if(!root)return;
  const rows=articlesCache.filter(x=>x.author_id===currentUser?.id);
  if(!rows.length){root.innerHTML='<p class="nr-empty">No articles yet. Start with “Write article”.</p>';return;}
- root.innerHTML=rows.map(a=>'<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(a.category)+' · Updated '+escapeText(new Date(a.updated_at).toLocaleString())+'</p>'+(a.editor_note?'<p><strong>Editor note:</strong> '+escapeText(a.editor_note)+'</p>':'')+(['draft','revision_requested'].includes(a.status)?'<div class="nr-actions"><button class="nr-btn secondary" data-edit-article="'+a.id+'">Edit</button></div>':'')+'</article>').join("");
+ root.innerHTML=rows.map(a=>'<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(articleAreas(a).join(" + ")||a.category)+' · Updated '+escapeText(new Date(a.updated_at).toLocaleString())+'</p>'+(a.editor_note?'<p><strong>Editor note:</strong> '+escapeText(a.editor_note)+'</p>':'')+(['draft','revision_requested'].includes(a.status)?'<div class="nr-actions"><button class="nr-btn secondary" data-edit-article="'+a.id+'">Edit</button></div>':'')+'</article>').join("");
  root.querySelectorAll("[data-edit-article]").forEach(b=>b.addEventListener("click",()=>editArticle(b.dataset.editArticle)));
 }
 function renderReviewQueue(){
@@ -63,7 +67,7 @@ function renderReviewQueue(){
   root.innerHTML=rows.map(a=>{
    const canReview=["submitted","revision_requested"].includes(a.status);
    const approved=a.status==="approved";
-   return '<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(a.category)+' · '+escapeText(a.byline||"Uncredited")+' · '+escapeText(a.author_id)+'</p><p>'+escapeText(a.summary)+'</p><details><summary>Read full article</summary><div style="white-space:pre-wrap;margin-top:12px">'+escapeText(a.body)+'</div>'+(a.image_url?'<p>Image: '+escapeText(a.image_url)+'</p>':'')+'</details>'+(canReview?'<div class="nr-field"><label>Editorial note</label><input data-note-for="'+a.id+'" value="'+escapeText(a.editor_note||"")+'" placeholder="Feedback for the author"></div>':'')+'<div class="nr-actions">'+(canReview?'<button class="nr-btn" data-review="approved" data-id="'+a.id+'">Approve for hourly publishing</button><button class="nr-btn secondary" data-review="revision_requested" data-id="'+a.id+'">Request revisions</button><button class="nr-btn danger" data-review="rejected" data-id="'+a.id+'">Reject</button>':approved?'<span class="nr-status">Approved for publishing</span>':'')+'<button class="nr-btn secondary" type="button" data-edit-article="'+a.id+'">Edit article</button>'+(a.status!=="rejected"?'<button class="nr-btn" type="button" data-publish-now="'+a.id+'">Publish now</button>':'')+'<button class="nr-btn danger" type="button" data-delete-article="'+a.id+'">Delete article</button></div></article>';
+   return '<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(articleAreas(a).join(" + ")||a.category)+' · '+escapeText(a.byline||"Uncredited")+' · '+escapeText(a.author_id)+'</p><p>'+escapeText(a.summary)+'</p><details><summary>Read full article</summary><div style="white-space:pre-wrap;margin-top:12px">'+escapeText(a.body)+'</div>'+(a.image_url?'<p>Image: '+escapeText(a.image_url)+'</p>':'')+'</details>'+(canReview?'<div class="nr-field"><label>Editorial note</label><input data-note-for="'+a.id+'" value="'+escapeText(a.editor_note||"")+'" placeholder="Feedback for the author"></div>':'')+'<div class="nr-actions">'+(canReview?'<button class="nr-btn" data-review="approved" data-id="'+a.id+'">Approve for hourly publishing</button><button class="nr-btn secondary" data-review="revision_requested" data-id="'+a.id+'">Request revisions</button><button class="nr-btn danger" data-review="rejected" data-id="'+a.id+'">Reject</button>':approved?'<span class="nr-status">Approved for publishing</span>':'')+'<button class="nr-btn secondary" type="button" data-edit-article="'+a.id+'">Edit article</button>'+(a.status!=="rejected"?'<button class="nr-btn" type="button" data-publish-now="'+a.id+'">Publish now</button>':'')+'<button class="nr-btn danger" type="button" data-delete-article="'+a.id+'">Delete article</button></div></article>';
   }).join("");
   root.querySelectorAll("[data-review]").forEach(b=>b.addEventListener("click",()=>reviewArticle(b.dataset.id,b.dataset.review)));
   root.querySelectorAll("[data-edit-article]").forEach(b=>b.addEventListener("click",()=>editArticle(b.dataset.editArticle)));
@@ -107,11 +111,13 @@ async function reviewArticle(id,status){
  await refreshData();
 }
 function resetArticleForm(){
- $("nr-article-form").reset();$("nr-article-id").value="";$("nr-write-title").textContent="Submit an article";$("nr-cancel-edit").classList.add("nr-hidden");
+ $("nr-article-form").reset();setArticleAreas(["Top Stories"]);$("nr-article-id").value="";$("nr-write-title").textContent="Submit an article";$("nr-cancel-edit").classList.add("nr-hidden");
 }
 async function saveArticle(status){
  const id=$("nr-article-id").value;
- const payload={headline:$("nr-article-headline").value.trim(),category:$("nr-article-category").value,summary:$("nr-article-summary").value.trim(),body:$("nr-article-body").value.trim(),byline:$("nr-article-byline").value.trim()||(currentProfile?.display_name||currentUser.email),image_url:$("nr-article-image").value.trim()||null,status,updated_at:new Date().toISOString()};
+ const categories=selectedArticleAreas();
+ if(!categories.length){showMessage("Choose at least one area for the article.","error");return;}
+ const payload={headline:$("nr-article-headline").value.trim(),category:categories[0],categories,summary:$("nr-article-summary").value.trim(),body:$("nr-article-body").value.trim(),byline:$("nr-article-byline").value.trim()||(currentProfile?.display_name||currentUser.email),image_url:$("nr-article-image").value.trim()||null,status,updated_at:new Date().toISOString()};
  if(!payload.headline||!payload.summary||payload.body.length<80){showMessage("Add a headline, summary, and article body of at least 80 characters.","error");return;}
  let result;
  if(id) result=await supabase.from("newsroom_articles").update(payload).eq("id",id).select().single();
@@ -121,7 +127,7 @@ async function saveArticle(status){
 }
 function editArticle(id){
  const a=articlesCache.find(x=>x.id===id);if(!a)return;
- $("nr-article-id").value=a.id;$("nr-article-headline").value=a.headline;$("nr-article-category").value=a.category;$("nr-article-summary").value=a.summary;$("nr-article-body").value=a.body;$("nr-article-byline").value=a.byline;$("nr-article-image").value=a.image_url||"";
+ $("nr-article-id").value=a.id;$("nr-article-headline").value=a.headline;setArticleAreas(articleAreas(a));$("nr-article-summary").value=a.summary;$("nr-article-body").value=a.body;$("nr-article-byline").value=a.byline;$("nr-article-image").value=a.image_url||"";
  $("nr-write-title").textContent="Edit article";$("nr-cancel-edit").classList.remove("nr-hidden");activeTab("write");window.scrollTo({top:0,behavior:"smooth"});
 }
 const PARTY_COLORS={"Heritage Party":"#b21212","Progress Party":"#0144c8","Federalist Party":"#4b317c","Independent":"#615e5e"};
