@@ -204,7 +204,7 @@ function renderElections(){
 function editElection(id){
  const e=electionsCache.find(x=>x.id===id);if(!e)return;
  $("nr-election-id").value=e.id;$("nr-election-title").value=e.title;$("nr-election-type").value=e.election_type;$("nr-election-party").value=e.party_or_jurisdiction||"";$("nr-election-date").value=e.election_date||"";$("nr-election-status").value=e.counting_status;$("nr-election-notes").value=e.notes||"";
- $("nr-candidate-rows").replaceChildren(...(e.candidates||[]).map(candidateRow));if(!$("nr-candidate-rows").children.length)$("nr-candidate-rows").append(candidateRow());
+ $("nr-candidate-rows").replaceChildren(...(e.candidates||[]).map(candidateRow));if(!$("nr-candidate-rows").children.length)$("nr-candidate-rows").append(candidateRow());refreshCandidatePercentages();
  $("nr-election-cancel").classList.remove("nr-hidden");activeTab("elections");window.scrollTo({top:0,behavior:"smooth"});
 }
 $("nr-login-form").addEventListener("submit",async e=>{e.preventDefault();if(!supabase){showMessage("Supabase setup is incomplete.","error");return;}clearMessage();const {error}=await supabase.auth.signInWithPassword({email:$("nr-email").value.trim(),password:$("nr-password").value});if(error){showMessage(error.message,"error");return;}await refreshSession();showMessage("Signed in.","success");});
