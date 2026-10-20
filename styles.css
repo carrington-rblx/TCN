@@ -91,3 +91,6 @@ html,body{background:#050505!important;color:#fff!important}body{color:#fff}
 .newsroom-access p{font-size:12px;line-height:1.7;color:#eee;max-width:650px;margin:0}
 .newsroom-access-button{display:inline-flex;align-items:center;gap:12px;padding:14px 18px;font-size:11px;font-weight:800;white-space:nowrap}
 @media(max-width:700px){.newsroom-access{align-items:flex-start;flex-direction:column;padding:20px}.header-actions{gap:8px}.newsroom-login-link{padding:10px 9px;font-size:9px}}
+
+/* Compact, discreet newsroom entry on the homepage */
+.newsroom-access{display:none!important}.newsroom-quick-link{text-align:center;margin:26px auto 10px;padding:0;font-size:11px;letter-spacing:.04em}.newsroom-quick-link a{color:#ddd;text-decoration:underline;text-decoration-color:#fc2121;text-underline-offset:4px}.newsroom-quick-link a:hover{color:#fc2121}.newsroom-login-link{background:transparent!important;color:#fff!important;border:0!important;padding:8px 5px!important;font-size:10px!important;text-decoration:underline;text-decoration-color:#fc2121;text-underline-offset:4px}.newsroom-login-link:hover{color:#fc2121!important;background:transparent!important}
