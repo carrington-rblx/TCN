@@ -21,7 +21,7 @@ function activeTab(name){
 }
 document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>activeTab(b.dataset.tab)));
 function setEditorTools(){
- ["nr-review-tab","nr-accounts-tab","nr-elections-tab"].forEach(id=>$(id).classList.toggle("nr-hidden",!isEditor()));
+ ["nr-review-tab","nr-accounts-tab","nr-elections-tab","nr-site-pages-tab"].forEach(id=>$(id).classList.toggle("nr-hidden",!isEditor()));
 }
 async function refreshSession(){
  if(!supabase)return;
