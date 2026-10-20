@@ -357,3 +357,15 @@ body:not(.newsroom-body) .story-card { border-color:#dedede!important; }
 .election-candidate-portrait-frame .election-candidate-photo{width:100%;height:100%;display:block;object-fit:cover;object-position:center top;background:transparent}
 .election-candidate-portrait-frame .election-candidate-placeholder{color:#fff!important;font-weight:900;letter-spacing:.08em}
 @media(max-width:600px){.election-candidate-portrait-frame{width:60px;height:70px}}
+
+/* Clickable election archive sections */
+.election-archive-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0 0 18px}
+.election-archive-tab{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 13px;border:1px solid #d8d8d8;background:#fff;color:#111;text-align:left;font-weight:800;font-size:12px;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.election-archive-tab span{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:99px;background:#eee;color:#333;font-size:10px}
+.election-archive-tab:hover,.election-archive-tab.active{background:#111;color:#fff;border-color:#111}
+.election-archive-tab.active span{background:var(--red);color:#fff}
+.election-archive-panel[hidden]{display:none}
+.election-archive-empty{padding:24px;border:1px dashed #ccc;color:#666;font-size:13px;background:#fafafa}
+.election-archive-panel .election-archive-stack{display:grid;gap:14px}
+.election-archive-panel .election-archive-trigger{min-height:132px}
+@media(max-width:650px){.election-archive-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.election-archive-tab{padding:12px 10px;font-size:11px}}
