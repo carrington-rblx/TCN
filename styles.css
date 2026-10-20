@@ -331,3 +331,17 @@ body:not(.newsroom-body) .story-card { border-color:#dedede!important; }
  .election-candidate-name-line{align-items:flex-start;flex-direction:column;gap:6px}
  .nr-candidate-editor-card{padding:10px}
 }
+
+/* Completed election archive tiles: clickable winner portrait on the party-color backdrop. */
+.election-archive-trigger{width:100%;text-align:left;font:inherit;cursor:pointer;position:relative;transition:transform .15s ease,box-shadow .15s ease;border:0;border-left:6px solid var(--candidate-party,#615e5e)}
+.election-archive-trigger:hover,.election-archive-trigger:focus-visible{box-shadow:0 5px 20px #0001;transform:translateY(-1px);outline:2px solid var(--candidate-party,#615e5e);outline-offset:2px}
+.election-winner-portrait-frame{width:112px;height:132px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;flex:0 0 auto;background:var(--candidate-party,#615e5e)}
+.election-winner-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;background:transparent}
+.election-winner-placeholder{align-items:center;justify-content:center;color:#fff!important;font-weight:900;letter-spacing:.12em}
+.election-winner-copy{flex:1}
+.election-winner-name{font-size:clamp(23px,3vw,34px);line-height:1.05;margin:0;color:#111}
+.election-archive-chevron{font-size:27px;font-weight:400;color:var(--candidate-party,#615e5e);align-self:center;margin-left:auto}
+.election-details-body[hidden]{display:none!important}
+.election-last-updated{font-size:12px;color:#555;margin-top:16px}
+.election-canceled-label{padding:14px;background:#f2f2f2;color:#555;font-weight:700}
+@media(max-width:600px){.election-winner-portrait-frame{width:86px;height:108px}.election-archive-chevron{font-size:22px}}
