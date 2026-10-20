@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T17:24:14.325Z",
+  "generated_at": "2026-10-20T17:26:17.815Z",
   "articles": [],
   "elections": [
     {
@@ -8,7 +8,7 @@
       "election_type": "Presidential",
       "party_or_jurisdiction": "United States",
       "election_date": null,
-      "counting_status": "Results coming in",
+      "counting_status": "Official final results",
       "candidates": [
         {
           "name": "Daniel Harrison",
@@ -28,8 +28,8 @@
         }
       ],
       "notes": "",
-      "published_at": "2026-10-20T17:23:59.323+00:00",
-      "updated_at": "2026-10-20T17:23:59.323+00:00"
+      "published_at": "2026-10-20T17:26:04.208+00:00",
+      "updated_at": "2026-10-20T17:26:04.208+00:00"
     }
   ]
 }
