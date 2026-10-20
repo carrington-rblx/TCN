@@ -4,9 +4,16 @@ Deno.serve(async (req) => {
   if (req.method !== "GET") return json({ error: "GET required" }, 405);
   const secret = Deno.env.get("NEWSROOM_PUBLISH_SECRET");
   const supplied = req.headers.get("x-newsroom-publish-secret") || "";
-  if (!secret || supplied.length !== secret.length || !crypto.subtle || !(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(supplied))).every((b, i, a) => b === (await crypto.subtle.digest("SHA-256", new TextEncoder().encode(secret)))[i])) {
-    return json({ error: "Unauthorized." }, 401);
-  }
+  if (!secret) return json({ error: "Unauthorized." }, 401);
+  const encoder = new TextEncoder();
+  const [givenHash, expectedHash] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(supplied)),
+    crypto.subtle.digest("SHA-256", encoder.encode(secret))
+  ]);
+  const given = new Uint8Array(givenHash), expected = new Uint8Array(expectedHash);
+  let mismatch = given.length ^ expected.length;
+  for (let i = 0; i < Math.min(given.length, expected.length); i++) mismatch |= given[i] ^ expected[i];
+  if (mismatch !== 0) return json({ error: "Unauthorized." }, 401);
   const url = Deno.env.get("SUPABASE_URL");
   const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !key) return json({ error: "Server is not configured." }, 500);
