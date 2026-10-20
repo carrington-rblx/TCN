@@ -272,3 +272,62 @@ body:not(.newsroom-body) .section-heading>p {
   background-color:transparent!important;
 }
 body:not(.newsroom-body) .story-card { border-color:#dedede!important; }
+
+
+/* Election results module: candidate party colors, live vote bars and completed-election archive. */
+.published-election-list{display:grid;gap:30px}
+.election-results-group{display:grid;gap:18px}
+.published-election-card{background:#fff;border:1px solid #dedede;border-top:4px solid #222;padding:clamp(16px,3vw,28px);margin:0 0 18px;color:#111}
+.published-election-card.is-live{border-top-color:#b21212}
+.published-election-card.is-complete{border-top-color:#111}
+.published-election-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:20px}
+.published-election-heading h3{margin:8px 0;font-size:clamp(23px,3vw,34px);line-height:1.15;color:#111}
+.published-election-heading p{margin:0;color:#666}
+.published-election-heading .eyebrow{font-size:11px;letter-spacing:.12em;color:#777;text-transform:uppercase}
+.published-election-heading .archive-count{font-size:12px;white-space:nowrap;border:1px solid #ddd;padding:7px 10px;color:#222}
+.published-candidate-list{display:grid;gap:14px}
+.election-winner-feature{display:flex;align-items:center;gap:20px;margin:0 0 22px;padding:16px;border-left:6px solid var(--candidate-party,#615e5e);background:#f5f5f5}
+.election-winner-photo{width:112px;height:132px;object-fit:cover;object-position:center top;flex:0 0 auto;background:#e5e5e5}
+.election-winner-placeholder{display:flex;align-items:center;justify-content:center;font-weight:900;color:#777;letter-spacing:.12em}
+.election-winner-copy{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}
+.election-winner-kicker{font-size:10px;letter-spacing:.15em;font-weight:800;color:var(--candidate-party)}
+.election-winner-copy h4{font-size:clamp(23px,3vw,34px);line-height:1.05;margin:0;color:#111}
+.election-party-pill{display:inline-block;background:var(--candidate-party,#615e5e);color:#fff!important;padding:4px 8px;font-size:11px;font-weight:700;line-height:1.2}
+.election-winner-share{font-size:clamp(27px,4vw,42px);line-height:1;color:var(--candidate-party);margin-top:7px}
+.election-winner-copy>span:last-child{font-size:13px;color:#555}
+.election-candidate-row{display:grid;grid-template-columns:60px minmax(0,1fr);align-items:center;gap:13px;border-bottom:1px solid #eee;padding:12px 0}
+.election-candidate-photo{width:60px;height:70px;object-fit:cover;object-position:center top;background:#e5e5e5}
+.election-candidate-placeholder{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#777}
+.election-candidate-main{min-width:0}
+.election-candidate-name-line{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.election-candidate-name-line strong{font-size:16px;color:#111}
+.election-candidate-name-line .election-party-pill{font-size:10px;flex:0 0 auto}
+.election-vote-bar{height:7px;background:#e9e9e9;overflow:hidden;margin-bottom:6px}
+.election-vote-bar span{display:block;height:100%;min-width:0}
+.election-candidate-meta{font-size:12px;color:#555;font-variant-numeric:tabular-nums}
+.completed-election-group{padding-top:14px;border-top:2px solid #222}
+.completed-election-group>.section-heading h3{margin:0;color:#111}
+.completed-election-group>.section-heading p{color:#555}
+.election-results-group>.section-heading{background:transparent!important}
+.nr-candidate-editor{display:grid;gap:14px}
+.nr-candidate-editor-card{border:1px solid #3a3a3a;border-radius:9px;padding:15px;background:#0b0b0b}
+.nr-candidate-editor-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nr-candidate-editor-top>strong{font-size:17px}
+.nr-candidate-editor-card .nr-grid{align-items:start}
+.nr-candidate-editor-card .nr-field{min-width:0}
+.nr-candidate-editor-card input[type=file]{font-size:12px;padding:9px}
+.nr-candidate-preview-wrap{display:flex;flex-wrap:wrap;align-items:center;gap:9px;align-self:center}
+.nr-candidate-preview{width:74px;height:88px;object-fit:cover;object-position:center top;border:1px solid #555;border-radius:4px}
+.nr-candidate-color{display:inline-block;border-radius:3px;padding:5px 8px;color:#fff;font-size:11px;font-weight:700}
+.nr-candidate-percent{font-size:23px;font-variant-numeric:tabular-nums}
+.nr-saved-candidate-list{display:grid;gap:8px;margin:14px 0}
+.nr-saved-candidate{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.nr-saved-candidate>strong{margin-right:auto}
+.nr-saved-candidate>span:last-child{font-variant-numeric:tabular-nums;color:#aaa;font-size:13px}
+@media(max-width:600px){
+ .published-election-heading{flex-direction:column}
+ .election-winner-feature{gap:13px;padding:12px}
+ .election-winner-photo{width:86px;height:108px}
+ .election-candidate-name-line{align-items:flex-start;flex-direction:column;gap:6px}
+ .nr-candidate-editor-card{padding:10px}
+}
