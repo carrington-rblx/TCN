@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T17:26:17.815Z",
+  "generated_at": "2026-10-20T17:50:57.577Z",
   "articles": [],
   "elections": [
     {
@@ -15,7 +15,7 @@
           "party": "Heritage Party",
           "seats": null,
           "votes": 8000,
-          "image_url": "https://epeglzxdovwnmmybkpto.supabase.co/storage/v1/object/public/tcn-candidate-images/242a592e-9cd9-494d-b4d7-5c0ecba4c8a6/743956ed-b5bf-45aa-9188-d66e37c9ddc8.png",
+          "image_url": "https://epeglzxdovwnmmybkpto.supabase.co/storage/v1/object/public/tcn-candidate-images/242a592e-9cd9-494d-b4d7-5c0ecba4c8a6/636f7140-692d-4f51-be0a-6758b660cb57.png",
           "party_color": "#b21212"
         },
         {
@@ -23,13 +23,13 @@
           "party": "Progress Party",
           "seats": null,
           "votes": 5000,
-          "image_url": "https://epeglzxdovwnmmybkpto.supabase.co/storage/v1/object/public/tcn-candidate-images/242a592e-9cd9-494d-b4d7-5c0ecba4c8a6/888834f1-9b97-4d00-96b9-645d1af25880.png",
+          "image_url": "https://epeglzxdovwnmmybkpto.supabase.co/storage/v1/object/public/tcn-candidate-images/242a592e-9cd9-494d-b4d7-5c0ecba4c8a6/0bd4ea4b-bc02-4b3a-83ac-a11cd69dfe35.png",
           "party_color": "#0144c8"
         }
       ],
       "notes": "",
-      "published_at": "2026-10-20T17:26:04.208+00:00",
-      "updated_at": "2026-10-20T17:26:04.208+00:00"
+      "published_at": "2026-10-20T17:50:43.77+00:00",
+      "updated_at": "2026-10-20T17:50:43.77+00:00"
     }
   ]
 }
