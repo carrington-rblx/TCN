@@ -177,3 +177,31 @@ body:not(.newsroom-body) .archive-result-link,
 body:not(.newsroom-body) .result-panel,
 body:not(.newsroom-body) .election-results-module,
 body:not(.newsroom-body) .article-aside { color:#111!important; }
+
+
+/* Keep the private newsroom visually independent from the public white theme. */
+body.newsroom-body,
+body.newsroom-body .topline,
+body.newsroom-body .site-header {
+  background:#050505!important;
+  color:#fff!important;
+}
+body.newsroom-body .topline { border-color:#333!important; }
+body.newsroom-body .site-header {
+  border-color:#333!important;
+  box-shadow:none!important;
+}
+body.newsroom-body .site-header a,
+body.newsroom-body .site-header nav a,
+body.newsroom-body .site-header .brand,
+body.newsroom-body .site-header .main-nav a {
+  color:#fff!important;
+}
+body.newsroom-body .site-header nav a:hover,
+body.newsroom-body .site-header .main-nav a:hover { color:#fc2121!important; }
+body.newsroom-body .site-header .search-button,
+body.newsroom-body .site-header .menu-toggle {
+  background:#111!important;
+  color:#fff!important;
+  border-color:#444!important;
+}
