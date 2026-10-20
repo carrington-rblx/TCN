@@ -123,22 +123,56 @@ function editArticle(id){
  $("nr-article-id").value=a.id;$("nr-article-headline").value=a.headline;$("nr-article-category").value=a.category;$("nr-article-summary").value=a.summary;$("nr-article-body").value=a.body;$("nr-article-byline").value=a.byline;$("nr-article-image").value=a.image_url||"";
  $("nr-write-title").textContent="Edit article";$("nr-cancel-edit").classList.remove("nr-hidden");activeTab("write");window.scrollTo({top:0,behavior:"smooth"});
 }
-function candidateRow(candidate={name:"",votes:0,seats:""}){
- const tr=document.createElement("tr");
- tr.innerHTML='<td><input aria-label="Candidate name" class="nr-candidate" required></td><td><input aria-label="Votes" class="nr-votes" type="number" min="0" step="1" value="0" required></td><td><input aria-label="Seats" class="nr-seats" type="number" min="0" step="1"></td><td><button class="nr-btn secondary nr-remove-candidate" type="button" aria-label="Remove candidate">×</button></td>';
- tr.querySelector(".nr-candidate").value=candidate.name||"";tr.querySelector(".nr-votes").value=Number(candidate.votes||0);tr.querySelector(".nr-seats").value=candidate.seats??"";
- tr.querySelector(".nr-remove-candidate").addEventListener("click",()=>{if($("nr-candidate-rows").children.length>1)tr.remove();else tr.querySelector(".nr-candidate").value="";});
- return tr;
+const PARTY_COLORS={"Heritage Party":"#b21212","Progress Party":"#0144c8","Federalist Party":"#4b317c","Independent":"#615e5e"};
+function candidateRow(candidate={name:"",votes:0,seats:"",party:"Independent",image_url:""}){
+ const card=document.createElement("article");card.className="nr-candidate-editor-card";
+ card.innerHTML='<div class="nr-candidate-editor-top"><strong class="nr-candidate-preview-name">Candidate profile</strong><button class="nr-btn danger nr-remove-candidate" type="button">Remove</button></div><div class="nr-grid"><div class="nr-field"><label>Candidate name</label><input class="nr-candidate" required maxlength="120" placeholder="Candidate name"></div><div class="nr-field"><label>Party affiliation</label><select class="nr-party"><option>Heritage Party</option><option>Progress Party</option><option>Federalist Party</option><option>Independent</option></select></div><div class="nr-field"><label>Current vote count</label><input class="nr-votes" type="number" min="0" step="1" value="0" required></div><div class="nr-field"><label>Seats (optional)</label><input class="nr-seats" type="number" min="0" step="1"></div><div class="nr-field"><label>Candidate photo</label><input class="nr-candidate-image" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><input class="nr-candidate-image-url" type="hidden"><span class="nr-small">Upload JPG, PNG, WebP or GIF (max 5 MB).</span></div><div class="nr-candidate-preview-wrap"><img class="nr-candidate-preview" alt="Candidate photo preview" hidden><span class="nr-candidate-color"></span><strong class="nr-candidate-percent">0.0%</strong><span class="nr-small nr-candidate-vote-preview">0 votes</span></div></div>';
+ card.querySelector(".nr-candidate").value=candidate.name||"";
+ card.querySelector(".nr-party").value=PARTY_COLORS[candidate.party]?candidate.party:"Independent";
+ card.querySelector(".nr-votes").value=Math.max(0,Number(candidate.votes)||0);
+ card.querySelector(".nr-seats").value=candidate.seats??"";
+ card.querySelector(".nr-candidate-image-url").value=candidate.image_url||"";
+ const preview=card.querySelector(".nr-candidate-preview");
+ if(candidate.image_url){preview.src=candidate.image_url;preview.hidden=false;}
+ const updatePreview=()=>{const party=card.querySelector(".nr-party").value;card.querySelector(".nr-candidate-preview-name").textContent=card.querySelector(".nr-candidate").value.trim()||"Candidate profile";card.querySelector(".nr-candidate-color").style.background=PARTY_COLORS[party];card.querySelector(".nr-candidate-color").textContent=party+" · "+PARTY_COLORS[party];card.querySelector(".nr-candidate-vote-preview").textContent=Math.max(0,Number(card.querySelector(".nr-votes").value)||0).toLocaleString()+" votes";refreshCandidatePercentages();};
+ card.querySelector(".nr-candidate").addEventListener("input",updatePreview);
+ card.querySelector(".nr-party").addEventListener("change",updatePreview);
+ card.querySelector(".nr-votes").addEventListener("input",updatePreview);
+ card.querySelector(".nr-candidate-image").addEventListener("change",()=>{const file=card.querySelector(".nr-candidate-image").files?.[0];if(file){if(file.size>5*1024*1024){showMessage("Candidate photos must be 5 MB or smaller.","error");card.querySelector(".nr-candidate-image").value="";return;}preview.src=URL.createObjectURL(file);preview.hidden=false;}updatePreview();});
+ card.querySelector(".nr-remove-candidate").addEventListener("click",()=>{if($("nr-candidate-rows").children.length>1)card.remove();else{card.querySelector(".nr-candidate").value="";card.querySelector(".nr-votes").value=0;card.querySelector(".nr-candidate-image").value="";card.querySelector(".nr-candidate-image-url").value="";preview.removeAttribute("src");preview.hidden=true;}refreshCandidatePercentages();});
+ updatePreview();return card;
+}
+function refreshCandidatePercentages(){
+ const cards=[...$("nr-candidate-rows").children];
+ const total=cards.reduce((sum,card)=>sum+Math.max(0,Number(card.querySelector(".nr-votes")?.value)||0),0);
+ cards.forEach(card=>{const votes=Math.max(0,Number(card.querySelector(".nr-votes")?.value)||0);card.querySelector(".nr-candidate-percent").textContent=(total?votes/total*100:0).toFixed(1)+"%";});
 }
 $("nr-add-candidate").addEventListener("click",()=>$("nr-candidate-rows").append(candidateRow()));
-$("nr-candidate-rows").querySelectorAll(".nr-remove-candidate").forEach(b=>b.addEventListener("click",()=>{if($("nr-candidate-rows").children.length>1)b.closest("tr").remove();else b.closest("tr").querySelector(".nr-candidate").value="";}));
 function resetElectionForm(){ $("nr-election-form").reset();$("nr-election-id").value="";$("nr-candidate-rows").replaceChildren(candidateRow());$("nr-election-cancel").classList.add("nr-hidden"); }
-function readCandidates(){
- return [...$("nr-candidate-rows").querySelectorAll("tr")].map(tr=>({name:tr.querySelector(".nr-candidate").value.trim(),votes:Number(tr.querySelector(".nr-votes").value||0),seats:tr.querySelector(".nr-seats").value===""?null:Number(tr.querySelector(".nr-seats").value)})).filter(c=>c.name);
+async function readCandidates(){
+ const cards=[...$("nr-candidate-rows").children],out=[];
+ for(const card of cards){
+  const name=card.querySelector(".nr-candidate").value.trim();if(!name)continue;
+  let imageUrl=card.querySelector(".nr-candidate-image-url").value||null;
+  const file=card.querySelector(".nr-candidate-image").files?.[0];
+  if(file){
+   if(file.size>5*1024*1024)throw new Error("Candidate photos must be 5 MB or smaller.");
+   const ext=({ "image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/gif":"gif"})[file.type];
+   if(!ext)throw new Error("Use a JPG, PNG, WebP or GIF candidate photo.");
+   const path=currentUser.id+"/"+crypto.randomUUID()+"."+ext;
+   const {error:uploadError}=await supabase.storage.from("tcn-candidate-images").upload(path,file,{contentType:file.type,cacheControl:"3600",upsert:false});
+   if(uploadError)throw new Error("Candidate photo upload failed: "+uploadError.message);
+   imageUrl=supabase.storage.from("tcn-candidate-images").getPublicUrl(path).data.publicUrl;
+  }
+  out.push({name,votes:Math.max(0,Number(card.querySelector(".nr-votes").value)||0),seats:card.querySelector(".nr-seats").value===""?null:Number(card.querySelector(".nr-seats").value),party:card.querySelector(".nr-party").value,party_color:PARTY_COLORS[card.querySelector(".nr-party").value],image_url:imageUrl});
+ }
+ return out;
 }
 async function saveElection(publish){
  const id=$("nr-election-id").value;
- const payload={title:$("nr-election-title").value.trim(),election_type:$("nr-election-type").value,party_or_jurisdiction:$("nr-election-party").value.trim(),election_date:$("nr-election-date").value||null,counting_status:$("nr-election-status").value,candidates:readCandidates(),notes:$("nr-election-notes").value.trim(),publication_status:publish?"published":"draft",published_at:publish?new Date().toISOString():null,updated_at:new Date().toISOString(),editor_id:currentUser.id};
+ let candidates;
+ try{candidates=await readCandidates();}catch(error){showMessage(error.message||"Could not prepare candidate photos.","error");return;}
+ const payload={title:$("nr-election-title").value.trim(),election_type:$("nr-election-type").value,party_or_jurisdiction:$("nr-election-party").value.trim(),election_date:$("nr-election-date").value||null,counting_status:$("nr-election-status").value,candidates,notes:$("nr-election-notes").value.trim(),publication_status:publish?"published":"draft",published_at:publish?new Date().toISOString():null,updated_at:new Date().toISOString(),editor_id:currentUser.id};
  if(!payload.title||!payload.candidates.length){showMessage("Add an election title and at least one candidate or list.","error");return;}
  const result=id?await supabase.from("newsroom_elections").update(payload).eq("id",id).select().single():await supabase.from("newsroom_elections").insert(payload).select().single();
  if(result.error){showMessage(result.error.message,"error");return;}
@@ -148,7 +182,7 @@ async function saveElection(publish){
    const response=await fetch(cfg.supabaseUrl+"/functions/v1/publish-now",{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.supabasePublishableKey,"Authorization":"Bearer "+(session?.access_token||"")},body:JSON.stringify({election_id:result.data.id})});
    const outcome=await response.json().catch(()=>({error:"Unexpected server response."}));
    if(!response.ok)throw new Error(outcome.error||"Could not start election publishing.");
-   showMessage("Election results published and the site publishing workflow has been triggered. The live page may take a few minutes to update.","success");
+   showMessage("Election results published and the site publishing workflow has been triggered.","success");
   }catch(error){showMessage(error.message||"Election results saved, but publishing could not be triggered.","error");resetElectionForm();await refreshData();return;}
  }else showMessage("Election results saved as a private draft.","success");
  resetElectionForm();await refreshData();
