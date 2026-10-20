@@ -1,17 +1,5 @@
 {
-  "generated_at": "2026-10-20T17:20:44.955Z",
-  "articles": [
-    {
-      "id": "31e38053-b6c1-426c-af27-faea4dbf4588",
-      "headline": "TEST",
-      "category": "Top Stories",
-      "summary": "TESTER",
-      "body": "TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER - TESTER -",
-      "byline": "Editor-in-chief",
-      "image_url": null,
-      "approved_at": "2026-10-20T16:12:57.279+00:00",
-      "updated_at": "2026-10-20T16:12:57.279+00:00"
-    }
-  ],
+  "generated_at": "2026-10-20T17:21:30.453Z",
+  "articles": [],
   "elections": []
 }
