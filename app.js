@@ -25,7 +25,7 @@ const archivePanels=[...document.querySelectorAll('[data-archive]')];
 const electionDetails=[...document.querySelectorAll('.election-detail')];
 const archiveTitle=document.getElementById('selected-election-title');
 const archiveCount=document.getElementById('archive-count');
-const categoryTitles={presidential:'Presidential Elections',house:'House Elections',senate:'Senate Elections',board:'Board Elections',leadership:'Party Leadership'};
+const categoryTitles={presidential:'Presidential Elections',house:'House Elections',senate:'Senate Elections',party:'Party Elections'};
 function showElectionCategory(category){
  electionCategoryButtons.forEach(button=>{const active=button.dataset.electionCategory===category;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
  archivePanels.forEach(panel=>{panel.hidden=panel.dataset.archive!==category;});
