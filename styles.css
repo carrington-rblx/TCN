@@ -65,3 +65,29 @@
 
 /* Approved newsroom feed */
 .published-feed{margin:42px 0}.published-card-image{display:block}.published-card-image img{width:100%;aspect-ratio:16/9;object-fit:cover}.published-election-list{display:grid;gap:14px}.published-election-card{border:1px solid var(--line,#333);padding:20px;border-radius:8px;background:var(--card,#111)}.published-election-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.published-election-heading h3{margin:7px 0}.published-election-heading p{color:#aaa;margin:4px 0}.published-candidate-list{margin:15px 0}.published-candidate{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-top:1px solid #333}.published-candidate strong{text-align:right}.published-election-card .nr-small{font-size:11px;color:#888}@media(max-width:560px){.published-election-heading{flex-direction:column}.published-candidate{flex-direction:column;gap:4px}.published-candidate strong{text-align:left}}
+
+/* TCN dark mode: black background, white text, red actions */
+:root{--black:#fff;--red:#fc2121;--paper:#050505;--muted:#d0d0d0;--line:#333;--soft:#111}
+html,body{background:#050505!important;color:#fff!important}body{color:#fff}
+.site-header,.page-wrap,.breaking,.section-heading,.lead-grid,.lead-side,.compact-story,.story-card,.desk-intro,.article-layout,.article-body,.site-footer,.election-archive,.election-archive-list,.election-detail,.published-feed{background-color:#050505;color:#fff}
+.site-header{border-color:#333}.topline{background:#000;color:#eee}
+.main-nav a,.brand-name,.section-heading h1,.section-heading h2,.lead-story h2,.compact-story h3,.story-card h3,.article-title,.article-body h2,.archive-list-heading h3,.election-module-heading h2,.archive-result-name strong,.published-election-heading h3{color:#fff}
+.section-heading{border-bottom-color:#fc2121}.breaking{border-bottom-color:#333}
+.breaking p,.dek,.desk-intro p,.article-subtitle,.article-aside p,.article-aside li,.archive-subtitle,.archive-result-name small,.archive-date,.archive-count,.archive-empty,.result-explanation,.party-heading p,.vote-row,.ballot-total,.seat-list li,.seat-list li>span,.seat-list small,.byline,.story-card p,.compact-story p,.section-heading>p{color:#e8e8e8}
+.lead-side{border-left-color:#333}
+.compact-story,.story-card,.desk-tag,.article-aside,.election-results-module,.result-panel,.election-category,.archive-result-link,.archive-empty,.election-category:hover,.election-category.active{background:#101010!important;color:#fff;border-color:#333}
+.election-category:hover,.election-category.active{border-color:#fc2121}.election-category>span:last-child,.archive-result-name small,.archive-date,.archive-count{color:#ddd}
+.election-archive-list{border-top-color:#fc2121}.archive-result-link{border-top-color:#333;color:#fff}.archive-result-link:hover{background:#1b1b1b!important}
+.result-panel{background:#090909!important;border-color:#333}.elected-banner{background:#171717;color:#fff}.elected-banner>span:last-child,.result-explanation{color:#eee}
+.vote-track{background:#333}.seat-list{border-color:#333}.seat-list li{border-color:#333}.unopposed-banner{background:#1a101a;color:#fff}
+.newsletter{background:#000;color:#fff}.search-panel{background:#080808;color:#fff;border-color:#fc2121}
+.search-panel input{background:#111;color:#fff;border-color:#444}.search-panel button[type=button]{background:#111;color:#fff;border-color:#444}
+.search-result{border-color:#333}.search-result strong{color:#fff}.pill{background:#222;color:#fff}
+.subscribe,.newsroom-login-link,.newsroom-access-button{background:#fc2121;color:#fff}
+.newsroom-login-link{display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;font-size:10px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
+.newsroom-login-link:hover,.newsroom-access-button:hover{background:#d81414}
+.newsroom-access{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:44px 0 8px;padding:25px 26px;background:#101010;border:1px solid #333;border-top:4px solid #fc2121}
+.newsroom-access h2{font-family:'Roboto Slab',Georgia,serif;font-size:26px;margin:7px 0;color:#fff}
+.newsroom-access p{font-size:12px;line-height:1.7;color:#eee;max-width:650px;margin:0}
+.newsroom-access-button{display:inline-flex;align-items:center;gap:12px;padding:14px 18px;font-size:11px;font-weight:800;white-space:nowrap}
+@media(max-width:700px){.newsroom-access{align-items:flex-start;flex-direction:column;padding:20px}.header-actions{gap:8px}.newsroom-login-link{padding:10px 9px;font-size:9px}}
