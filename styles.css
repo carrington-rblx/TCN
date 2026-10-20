@@ -352,3 +352,11 @@ body:not(.newsroom-body) .story-card { border-color:#dedede!important; }
 .election-archive-category{margin:22px 0}.election-archive-category>h4{font-size:20px;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid #222;padding-bottom:10px;margin:0 0 12px;color:#111}.election-archive-stack{display:grid;grid-template-columns:1fr;gap:12px}.election-archive-stack .published-election-card{margin:0;padding:14px;border:1px solid #e5e5e5;background:#fff}.election-archive-stack .election-winner-feature{background:color-mix(in srgb,var(--candidate-party) 10%,white);margin-bottom:0}.election-archive-stack .election-details-body{padding:12px 4px 4px}.election-results-group .published-election-card.is-live{border-top:4px solid #c51624;padding:16px;background:#fff}
 
 .election-results-group .published-election-card.is-live .published-election-heading .eyebrow{display:inline-flex;align-items:center;gap:7px}.election-results-group .published-election-card.is-live .published-election-heading .eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#d11b2d;display:inline-block;animation:tcn-live-pulse 1.4s ease-in-out infinite}@keyframes tcn-live-pulse{50%{opacity:.35;box-shadow:0 0 0 4px #d11b2d20}}
+
+/* Winner marker leads the candidate name and uses a heavier check stroke. */
+.election-candidate-name-line strong{display:inline-flex;align-items:center;gap:9px}
+.election-winner-check{order:-1;width:25px;height:25px;flex:0 0 25px;font-size:20px;font-weight:1000;-webkit-text-stroke:1.6px #050505;text-shadow:0 0 .4px #050505;border:1px solid #c9a900;border-radius:2px}
+.election-candidate-portrait-frame{width:60px;height:70px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto;background:var(--candidate-party,#615e5e)}
+.election-candidate-portrait-frame .election-candidate-photo{width:100%;height:100%;display:block;object-fit:cover;object-position:center top;background:transparent}
+.election-candidate-portrait-frame .election-candidate-placeholder{color:#fff!important;font-weight:900;letter-spacing:.08em}
+@media(max-width:600px){.election-candidate-portrait-frame{width:60px;height:70px}}
