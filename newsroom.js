@@ -78,7 +78,8 @@ function renderReviewQueue(){
   const {error}=await supabase.from("newsroom_articles").delete().eq("id",id);
   if(error){showMessage(error.message,"error");return;}
   if($("nr-article-id").value===id)resetArticleForm();
-  showMessage("Article deleted from the newsroom. The next successful publish run will refresh public content.","success");
+  showMessage("Article deleted from the newsroom. Refreshing the public site…","success");
+  await triggerFeedRefresh();
   await refreshData();
  }
  async function publishArticleNow(id,button){
@@ -188,6 +189,26 @@ async function saveElection(publish){
  }else showMessage("Election results saved as a private draft.","success");
  resetElectionForm();await refreshData();
 }
+async function triggerFeedRefresh(){
+ try{
+  const {data:{session}}=await supabase.auth.getSession();
+  const response=await fetch(cfg.supabaseUrl+"/functions/v1/publish-now",{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.supabasePublishableKey,"Authorization":"Bearer "+(session?.access_token||"")},body:JSON.stringify({refresh_feed:true})});
+  const result=await response.json().catch(()=>({error:"Unexpected server response."}));
+  if(!response.ok)throw new Error(result.error||"Could not refresh the public feed.");
+  return true;
+ }catch(error){showMessage("The newsroom change was saved, but the public feed refresh failed: "+(error.message||"Unknown error")+". It will remain until a publishing run succeeds.","error");return false;}
+}
+async function deleteElection(id){
+ if(!isEditor()){showMessage("Editor permission required to delete election results.","error");return;}
+ const election=electionsCache.find(e=>e.id===id);if(!election)return;
+ if(!window.confirm('Permanently delete "'+election.title+'"? This cannot be undone.'))return;
+ const {error}=await supabase.from("newsroom_elections").delete().eq("id",id);
+ if(error){showMessage(error.message,"error");return;}
+ if($("nr-election-id").value===id)resetElectionForm();
+ showMessage("Election results deleted from the newsroom. Refreshing the public site…","success");
+ await triggerFeedRefresh();
+ await refreshData();
+}
 function renderElections(){
  const root=$("nr-election-list");if(!root)return;
  if(!isEditor()){root.innerHTML='<p class="nr-empty">Editor access required.</p>';return;}
@@ -196,10 +217,11 @@ function renderElections(){
   const cs=Array.isArray(e.candidates)?e.candidates:[],total=cs.reduce((sum,c)=>sum+Math.max(0,Number(c.votes)||0),0);
   const final=["Official final results","Uncontested / unopposed","Canceled / unopposed"].includes(e.counting_status);
   const winner=cs.length?cs.reduce((best,c)=>!best||Number(c.votes||0)>Number(best.votes||0)?c:best,null):null;
-  return '<article class="nr-item nr-election-saved"><span class="nr-status">'+escapeText(e.publication_status)+'</span><h3>'+escapeText(e.title)+'</h3><p class="nr-muted">'+escapeText(e.election_type)+' · '+escapeText(e.counting_status)+' · '+escapeText(e.election_date||"Date not set")+'</p><p>'+total.toLocaleString()+' votes across '+cs.length+' candidate(s)</p><div class="nr-saved-candidate-list">'+cs.map(c=>{const party=PARTY_COLORS[c.party]?c.party:"Independent",votes=Math.max(0,Number(c.votes)||0),pct=total?votes/total*100:0;return '<div class="nr-saved-candidate"><span class="nr-candidate-color" style="background:'+PARTY_COLORS[party]+'">'+escapeText(party)+'</span><strong>'+escapeText(c.name)+'</strong><span>'+votes.toLocaleString()+' votes · '+pct.toFixed(1)+'%</span></div>';}).join("")+'</div>'+(final&&winner?'<p><strong>'+(e.counting_status==="Uncontested / unopposed"?"Uncontested candidate: ":"Current leader: ")+escapeText(winner.name)+'</strong></p>':'')+'<div class="nr-actions"><button class="nr-btn secondary" data-edit-election="'+e.id+'">Edit results</button>'+(e.publication_status==="published"?'<button class="nr-btn secondary" data-unpublish-election="'+e.id+'">Unpublish</button>':'')+'</div></article>';
+  return '<article class="nr-item nr-election-saved"><span class="nr-status">'+escapeText(e.publication_status)+'</span><h3>'+escapeText(e.title)+'</h3><p class="nr-muted">'+escapeText(e.election_type)+' · '+escapeText(e.counting_status)+' · '+escapeText(e.election_date||"Date not set")+'</p><p>'+total.toLocaleString()+' votes across '+cs.length+' candidate(s)</p><div class="nr-saved-candidate-list">'+cs.map(c=>{const party=PARTY_COLORS[c.party]?c.party:"Independent",votes=Math.max(0,Number(c.votes)||0),pct=total?votes/total*100:0;return '<div class="nr-saved-candidate"><span class="nr-candidate-color" style="background:'+PARTY_COLORS[party]+'">'+escapeText(party)+'</span><strong>'+escapeText(c.name)+'</strong><span>'+votes.toLocaleString()+' votes · '+pct.toFixed(1)+'%</span></div>';}).join("")+'</div>'+(final&&winner?'<p><strong>'+(e.counting_status==="Uncontested / unopposed"?"Uncontested candidate: ":"Current leader: ")+escapeText(winner.name)+'</strong></p>':'')+'<div class="nr-actions"><button class="nr-btn secondary" data-edit-election="'+e.id+'">Edit results</button>'+(e.publication_status==="published"?'<button class="nr-btn secondary" data-unpublish-election="'+e.id+'">Unpublish</button>':'')+'<button class="nr-btn danger" type="button" data-delete-election="'+e.id+'">Delete election results</button></div></article>';
  }).join("");
  root.querySelectorAll("[data-edit-election]").forEach(b=>b.addEventListener("click",()=>editElection(b.dataset.editElection)));
- root.querySelectorAll("[data-unpublish-election]").forEach(b=>b.addEventListener("click",async()=>{const {error}=await supabase.from("newsroom_elections").update({publication_status:"draft",published_at:null,updated_at:new Date().toISOString()}).eq("id",b.dataset.unpublishElection);if(error)showMessage(error.message,"error");else{showMessage("Results unpublished. The public feed will update automatically after the site publishing run.","success");await refreshData();}}));
+ root.querySelectorAll("[data-unpublish-election]").forEach(b=>b.addEventListener("click",async()=>{const {error}=await supabase.from("newsroom_elections").update({publication_status:"draft",published_at:null,updated_at:new Date().toISOString()}).eq("id",b.dataset.unpublishElection);if(error)showMessage(error.message,"error");else{showMessage("Results unpublished. Refreshing the public feed…","success");await triggerFeedRefresh();await refreshData();}}));
+ root.querySelectorAll("[data-delete-election]").forEach(b=>b.addEventListener("click",()=>deleteElection(b.dataset.deleteElection)));
 }
 function editElection(id){
  const e=electionsCache.find(x=>x.id===id);if(!e)return;
