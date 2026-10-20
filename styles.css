@@ -108,3 +108,72 @@ html,body{background:#fff!important;color:#111!important}
 .managed-story-area{margin:20px 0 35px}.managed-empty{padding:22px 16px;border:1px dashed #ccc;color:#666;font-size:13px;grid-column:1/-1}
 .story-card a,.compact-story a,.lead-story a{color:inherit}.story-card h3 a:hover,.compact-story h3 a:hover,.lead-story h2 a:hover{color:#d71920}
 @media(max-width:1050px){.lead-side{border-top-color:#dedede}}
+
+
+/* Accessibility pass: ensure every public-site text element is readable on white.
+   newsroom.html is excluded so its black background and white text stay unchanged. */
+body:not(.newsroom-body) *, body:not(.newsroom-body) *::before, body:not(.newsroom-body) *::after { text-shadow:none; }
+body:not(.newsroom-body) { color:#111!important; }
+body:not(.newsroom-body) .topline,
+body:not(.newsroom-body) .topline *,
+body:not(.newsroom-body) .newsletter,
+body:not(.newsroom-body) .newsletter *,
+body:not(.newsroom-body) .subscribe,
+body:not(.newsroom-body) .subscribe *,
+body:not(.newsroom-body) .search-panel,
+body:not(.newsroom-body) .search-panel * { /* keep intentional dark/red UI surfaces legible */ }
+body:not(.newsroom-body) p,
+body:not(.newsroom-body) li,
+body:not(.newsroom-body) label,
+body:not(.newsroom-body) small,
+body:not(.newsroom-body) time,
+body:not(.newsroom-body) figcaption,
+body:not(.newsroom-body) .eyebrow,
+body:not(.newsroom-body) .category,
+body:not(.newsroom-body) .story-meta,
+body:not(.newsroom-body) .byline,
+body:not(.newsroom-body) .dek,
+body:not(.newsroom-body) .notice,
+body:not(.newsroom-body) .parody-notice,
+body:not(.newsroom-body) .archive-subtitle,
+body:not(.newsroom-body) .archive-date,
+body:not(.newsroom-body) .archive-count,
+body:not(.newsroom-body) .archive-empty,
+body:not(.newsroom-body) .result-explanation,
+body:not(.newsroom-body) .published-candidate,
+body:not(.newsroom-body) .published-election-card .nr-small,
+body:not(.newsroom-body) .managed-empty { color:#111!important; }
+body:not(.newsroom-body) h1,
+body:not(.newsroom-body) h2,
+body:not(.newsroom-body) h3,
+body:not(.newsroom-body) h4,
+body:not(.newsroom-body) h5,
+body:not(.newsroom-body) h6,
+body:not(.newsroom-body) .main-nav a,
+body:not(.newsroom-body) .brand-name,
+body:not(.newsroom-body) a:not(.newsroom-login-link):not(.newsroom-quick-link a):not(.subscribe),
+body:not(.newsroom-body) button:not(.subscribe):not(.search-button),
+body:not(.newsroom-body) input,
+body:not(.newsroom-body) select,
+body:not(.newsroom-body) textarea { color:#111; }
+body:not(.newsroom-body) .topline,
+body:not(.newsroom-body) .topline *,
+body:not(.newsroom-body) .subscribe,
+body:not(.newsroom-body) .subscribe *,
+body:not(.newsroom-body) .search-panel,
+body:not(.newsroom-body) .search-panel *,
+body:not(.newsroom-body) .newsletter,
+body:not(.newsroom-body) .newsletter * { color:#fff!important; }
+body:not(.newsroom-body) .newsroom-login-link,
+body:not(.newsroom-body) .newsroom-quick-link a { color:#111!important; }
+body:not(.newsroom-body) .newsroom-login-link:hover,
+body:not(.newsroom-body) .newsroom-quick-link a:hover { color:#d71920!important; }
+body:not(.newsroom-body) input::placeholder,
+body:not(.newsroom-body) textarea::placeholder { color:#555!important; opacity:1; }
+body:not(.newsroom-body) .search-panel input,
+body:not(.newsroom-body) .search-panel input::placeholder { color:#fff!important; }
+body:not(.newsroom-body) .election-category,
+body:not(.newsroom-body) .archive-result-link,
+body:not(.newsroom-body) .result-panel,
+body:not(.newsroom-body) .election-results-module,
+body:not(.newsroom-body) .article-aside { color:#111!important; }
