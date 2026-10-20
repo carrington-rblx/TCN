@@ -63,11 +63,12 @@ function renderReviewQueue(){
   root.innerHTML=rows.map(a=>{
    const canReview=["submitted","revision_requested"].includes(a.status);
    const approved=a.status==="approved";
-   return '<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(a.category)+' · '+escapeText(a.byline||"Uncredited")+' · '+escapeText(a.author_id)+'</p><p>'+escapeText(a.summary)+'</p><details><summary>Read full article</summary><div style="white-space:pre-wrap;margin-top:12px">'+escapeText(a.body)+'</div>'+(a.image_url?'<p>Image: '+escapeText(a.image_url)+'</p>':'')+'</details>'+(canReview?'<div class="nr-field"><label>Editorial note</label><input data-note-for="'+a.id+'" value="'+escapeText(a.editor_note||"")+'" placeholder="Feedback for the author"></div>':'')+'<div class="nr-actions">'+(canReview?'<button class="nr-btn" data-review="approved" data-id="'+a.id+'">Approve for hourly publishing</button><button class="nr-btn secondary" data-review="revision_requested" data-id="'+a.id+'">Request revisions</button><button class="nr-btn danger" data-review="rejected" data-id="'+a.id+'">Reject</button>':approved?'<span class="nr-status">Approved for publishing</span>':'')+'<button class="nr-btn secondary" type="button" data-edit-article="'+a.id+'">Edit article</button><button class="nr-btn danger" type="button" data-delete-article="'+a.id+'">Delete article</button></div></article>';
+   return '<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(a.category)+' · '+escapeText(a.byline||"Uncredited")+' · '+escapeText(a.author_id)+'</p><p>'+escapeText(a.summary)+'</p><details><summary>Read full article</summary><div style="white-space:pre-wrap;margin-top:12px">'+escapeText(a.body)+'</div>'+(a.image_url?'<p>Image: '+escapeText(a.image_url)+'</p>':'')+'</details>'+(canReview?'<div class="nr-field"><label>Editorial note</label><input data-note-for="'+a.id+'" value="'+escapeText(a.editor_note||"")+'" placeholder="Feedback for the author"></div>':'')+'<div class="nr-actions">'+(canReview?'<button class="nr-btn" data-review="approved" data-id="'+a.id+'">Approve for hourly publishing</button><button class="nr-btn secondary" data-review="revision_requested" data-id="'+a.id+'">Request revisions</button><button class="nr-btn danger" data-review="rejected" data-id="'+a.id+'">Reject</button>':approved?'<span class="nr-status">Approved for publishing</span>':'')+'<button class="nr-btn secondary" type="button" data-edit-article="'+a.id+'">Edit article</button><button class="nr-btn" type="button" data-publish-now="'+a.id+'">Publish now</button><button class="nr-btn danger" type="button" data-delete-article="'+a.id+'">Delete article</button></div></article>';
   }).join("");
   root.querySelectorAll("[data-review]").forEach(b=>b.addEventListener("click",()=>reviewArticle(b.dataset.id,b.dataset.review)));
   root.querySelectorAll("[data-edit-article]").forEach(b=>b.addEventListener("click",()=>editArticle(b.dataset.editArticle)));
   root.querySelectorAll("[data-delete-article]").forEach(b=>b.addEventListener("click",()=>deleteArticle(b.dataset.deleteArticle)));
+  root.querySelectorAll("[data-publish-now]").forEach(b=>b.addEventListener("click",()=>publishArticleNow(b.dataset.publishNow,b)));
  }
  async function deleteArticle(id){
   if(!isEditor()){showMessage("Editor permission required to delete articles.","error");return;}
@@ -80,7 +81,23 @@ function renderReviewQueue(){
   showMessage("Article deleted from the newsroom. The next successful publish run will refresh public content.","success");
   await refreshData();
  }
- async function reviewArticle(id,status){
+ async function publishArticleNow(id,button){
+ if(!isEditor()){showMessage("Editor permission required to publish articles.","error");return;}
+ const article=articlesCache.find(a=>a.id===id); if(!article)return;
+ if(!window.confirm('Publish "'+article.headline+'" now? This will approve it and trigger a site publishing run.'))return;
+ const original=button?.textContent;
+ if(button){button.disabled=true;button.textContent="Publishing…";}
+ try{
+  const {data:{session}}=await supabase.auth.getSession();
+  const response=await fetch(cfg.supabaseUrl+"/functions/v1/publish-now",{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.supabasePublishableKey,"Authorization":"Bearer "+(session?.access_token||"")},body:JSON.stringify({article_id:id})});
+  const result=await response.json().catch(()=>({error:"Unexpected server response."}));
+  if(!response.ok)throw new Error(result.error||"Immediate publishing failed.");
+  showMessage("Article approved and the site publishing workflow has been triggered. The live page may take a few minutes to update.","success");
+  await refreshData();
+ }catch(error){showMessage(error.message||"Immediate publishing failed.","error");}
+ finally{if(button){button.disabled=false;button.textContent=original||"Publish now";}}
+}
+async function reviewArticle(id,status){
  const note=document.querySelector('[data-note-for="'+id+'"]')?.value||"";
  const patch={status,editor_note:note,approved_by:status==="approved"?currentUser.id:null,approved_at:status==="approved"?new Date().toISOString():null,updated_at:new Date().toISOString()};
  const {error}=await supabase.from("newsroom_articles").update(patch).eq("id",id);
