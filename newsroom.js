@@ -21,7 +21,7 @@ function activeTab(name){
 }
 document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>activeTab(b.dataset.tab)));
 function setEditorTools(){
- ["nr-review-tab","nr-accounts-tab","nr-elections-tab","nr-site-pages-tab"].forEach(id=>$(id).classList.toggle("nr-hidden",!isEditor()));
+ ["nr-review-tab","nr-accounts-tab","nr-elections-tab"].forEach(id=>$(id).classList.toggle("nr-hidden",!isEditor()));
 }
 async function refreshSession(){
  if(!supabase)return;
@@ -56,15 +56,31 @@ function renderMyArticles(){
  root.querySelectorAll("[data-edit-article]").forEach(b=>b.addEventListener("click",()=>editArticle(b.dataset.editArticle)));
 }
 function renderReviewQueue(){
- const root=$("nr-review-list"); if(!root)return;
- if(!isEditor()){root.innerHTML='<p class="nr-empty">Editor access required.</p>';return;}
- const rows=articlesCache.filter(a=>["submitted","revision_requested","approved"].includes(a.status));
- if(!rows.length){root.innerHTML='<p class="nr-empty">The editorial queue is clear.</p>';return;}
- root.innerHTML=rows.map(a=>'<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(a.category)+' · '+escapeText(a.byline||"Uncredited")+' · '+escapeText(a.author_id)+'</p><p>'+escapeText(a.summary)+'</p><details><summary>Read full article</summary><div style="white-space:pre-wrap;margin-top:12px">'+escapeText(a.body)+'</div>'+(a.image_url?'<p>Image: '+escapeText(a.image_url)+'</p>':'')+'</details><div class="nr-field"><label>Editorial note</label><input data-note-for="'+a.id+'" value="'+escapeText(a.editor_note||"")+'" placeholder="Feedback for the author"></div><div class="nr-actions">'+(a.status!=="approved"?'<button class="nr-btn" data-review="approved" data-id="'+a.id+'">Approve for hourly publishing</button>':'<span class="nr-status">Approved for publishing</span>')+'<button class="nr-btn secondary" type="button" data-edit-article="'+a.id+'">Edit article</button><button class="nr-btn secondary" data-review="revision_requested" data-id="'+a.id+'">Request revisions</button><button class="nr-btn danger" data-review="rejected" data-id="'+a.id+'">Reject</button></div></article>').join("");
- root.querySelectorAll("[data-review]").forEach(b=>b.addEventListener("click",()=>reviewArticle(b.dataset.id,b.dataset.review)));
- root.querySelectorAll("[data-edit-article]").forEach(b=>b.addEventListener("click",()=>editArticle(b.dataset.editArticle)));
-}
-async function reviewArticle(id,status){
+  const root=$("nr-review-list"); if(!root)return;
+  if(!isEditor()){root.innerHTML='<p class="nr-empty">Editor access required.</p>';return;}
+  const rows=articlesCache;
+  if(!rows.length){root.innerHTML='<p class="nr-empty">No newsroom articles yet.</p>';return;}
+  root.innerHTML=rows.map(a=>{
+   const canReview=["submitted","revision_requested"].includes(a.status);
+   const approved=a.status==="approved";
+   return '<article class="nr-item"><span class="nr-status">'+escapeText(a.status.replace("_"," "))+'</span><h3>'+escapeText(a.headline)+'</h3><p class="nr-muted">'+escapeText(a.category)+' · '+escapeText(a.byline||"Uncredited")+' · '+escapeText(a.author_id)+'</p><p>'+escapeText(a.summary)+'</p><details><summary>Read full article</summary><div style="white-space:pre-wrap;margin-top:12px">'+escapeText(a.body)+'</div>'+(a.image_url?'<p>Image: '+escapeText(a.image_url)+'</p>':'')+'</details>'+(canReview?'<div class="nr-field"><label>Editorial note</label><input data-note-for="'+a.id+'" value="'+escapeText(a.editor_note||"")+'" placeholder="Feedback for the author"></div>':'')+'<div class="nr-actions">'+(canReview?'<button class="nr-btn" data-review="approved" data-id="'+a.id+'">Approve for hourly publishing</button><button class="nr-btn secondary" data-review="revision_requested" data-id="'+a.id+'">Request revisions</button><button class="nr-btn danger" data-review="rejected" data-id="'+a.id+'">Reject</button>':approved?'<span class="nr-status">Approved for publishing</span>':'')+'<button class="nr-btn secondary" type="button" data-edit-article="'+a.id+'">Edit article</button><button class="nr-btn danger" type="button" data-delete-article="'+a.id+'">Delete article</button></div></article>';
+  }).join("");
+  root.querySelectorAll("[data-review]").forEach(b=>b.addEventListener("click",()=>reviewArticle(b.dataset.id,b.dataset.review)));
+  root.querySelectorAll("[data-edit-article]").forEach(b=>b.addEventListener("click",()=>editArticle(b.dataset.editArticle)));
+  root.querySelectorAll("[data-delete-article]").forEach(b=>b.addEventListener("click",()=>deleteArticle(b.dataset.deleteArticle)));
+ }
+ async function deleteArticle(id){
+  if(!isEditor()){showMessage("Editor permission required to delete articles.","error");return;}
+  const article=articlesCache.find(a=>a.id===id);
+  if(!article)return;
+  if(!window.confirm('Permanently delete "'+article.headline+'"? This cannot be undone.'))return;
+  const {error}=await supabase.from("newsroom_articles").delete().eq("id",id);
+  if(error){showMessage(error.message,"error");return;}
+  if($("nr-article-id").value===id)resetArticleForm();
+  showMessage("Article deleted from the newsroom. The next successful publish run will refresh public content.","success");
+  await refreshData();
+ }
+ async function reviewArticle(id,status){
  const note=document.querySelector('[data-note-for="'+id+'"]')?.value||"";
  const patch={status,editor_note:note,approved_by:status==="approved"?currentUser.id:null,approved_at:status==="approved"?new Date().toISOString():null,updated_at:new Date().toISOString()};
  const {error}=await supabase.from("newsroom_articles").update(patch).eq("id",id);
