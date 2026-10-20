@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
   if (!url || !key) return json({ error: "Server is not configured." }, 500);
   const db = createClient(url, key, { auth: { persistSession: false } });
   const [articles, elections] = await Promise.all([
-    db.from("newsroom_articles").select("id,headline,category,summary,body,byline,image_url,approved_at,updated_at").eq("status","approved").order("approved_at",{ascending:false}),
+    db.from("newsroom_articles").select("id,headline,category,categories,summary,body,byline,image_url,approved_at,updated_at").eq("status","approved").order("approved_at",{ascending:false}),
     db.from("newsroom_elections").select("id,title,election_type,party_or_jurisdiction,election_date,counting_status,candidates,notes,published_at,updated_at").eq("publication_status","published").order("updated_at",{ascending:false})
   ]);
   if (articles.error || elections.error) return json({ error: "Could not read publication queue." }, 500);
