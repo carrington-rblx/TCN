@@ -148,6 +148,7 @@ function refreshCandidatePercentages(){
  cards.forEach(card=>{const votes=Math.max(0,Number(card.querySelector(".nr-votes")?.value)||0);card.querySelector(".nr-candidate-percent").textContent=(total?votes/total*100:0).toFixed(1)+"%";});
 }
 $("nr-add-candidate").addEventListener("click",()=>$("nr-candidate-rows").append(candidateRow()));
+if(!$("nr-candidate-rows").children.length)$("nr-candidate-rows").append(candidateRow());
 function resetElectionForm(){ $("nr-election-form").reset();$("nr-election-id").value="";$("nr-candidate-rows").replaceChildren(candidateRow());$("nr-election-cancel").classList.add("nr-hidden"); }
 async function readCandidates(){
  const cards=[...$("nr-candidate-rows").children],out=[];
