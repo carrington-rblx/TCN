@@ -37,24 +37,52 @@ document.querySelectorAll('[data-back-archive]').forEach(button=>button.addEvent
 }));
 showElectionCategory('presidential');
 
-/* Public story slots are populated only from approved newsroom content. */
+/* Public newsroom feed: cards and election results update in place while the page stays open. */
 (async function loadApprovedNewsroomFeed(){
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const slugify=v=>String(v||'article').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'article';
  const norm=v=>String(v||'').toLowerCase().replace(/[^a-z]/g,'');
- try{
-  const response=await fetch('published-content.json',{cache:'no-store'});if(!response.ok)return;
-  const feed=await response.json(),articles=Array.isArray(feed.articles)?feed.articles:[],elections=Array.isArray(feed.elections)?feed.elections:[];
-  const publicArticles=articles.filter(a=>a&&a.headline);
-  storyIndex.splice(0,storyIndex.length,...publicArticles.map(a=>({title:a.headline,category:a.category||'TOP STORIES',summary:a.summary||'',url:'published-articles/'+slugify(a.headline)+'-'+String(a.id||'').replace(/[^a-zA-Z0-9-]/g,'').slice(0,8)+'.html'})));
-  const card=a=>{const id=String(a.id||'').replace(/[^a-zA-Z0-9-]/g,'').slice(0,8),url='published-articles/'+slugify(a.headline)+'-'+id+'.html',image=a.image_url&&/^https:\/\//i.test(a.image_url)?'<img src="'+esc(a.image_url)+'" alt="">':'';return '<article class="story-card"><a class="published-card-image" href="'+url+'">'+image+'</a><div class="story-card-content"><div class="story-meta"><span class="category">'+esc(a.category||'TOP STORIES')+'</span></div><h3><a href="'+url+'">'+esc(a.headline)+'</a></h3><p>'+esc(a.summary||'')+'</p><span class="byline">'+esc(a.byline||'TCN NEWSROOM')+'</span></div></article>';};
-  const page=(location.pathname.split('/').pop()||'index.html').toLowerCase(),desk=page==='world.html'?'world':page==='politics.html'?'politics':page==='elections.html'?'elections':'';
-  const matching=publicArticles.filter(a=>!desk||norm(a.category)===desk),deskRoot=document.getElementById('managed-desk-stories');
-  if(deskRoot)deskRoot.innerHTML=matching.length?matching.map(card).join(''):'<p class="managed-empty">No articles have been published in this section yet. Publish one from the newsroom.</p>';
-  const topRoot=document.getElementById('managed-top-stories');if(topRoot){const top=publicArticles.filter(a=>norm(a.category)==='topstories');topRoot.innerHTML=top.length?top.slice(0,6).map(card).join(''):'<p class="managed-empty">No Top Stories have been published yet. Choose “Top Stories” as the desk when writing an article.</p>';}
-  const allRoot=document.getElementById('managed-all-stories');if(allRoot)allRoot.innerHTML=publicArticles.length?publicArticles.slice(0,18).map(card).join(''):'<p class="managed-empty">Published newsroom articles will appear here automatically.</p>';
-  if(searchInput)renderSearch(searchInput.value||'');
-  const electionSection=document.getElementById('newsroom-live-elections'),electionRoot=document.getElementById('published-election-results');
-  if(electionSection&&electionRoot&&elections.length){electionRoot.innerHTML=elections.map(e=>{const cs=Array.isArray(e.candidates)?e.candidates:[],total=cs.reduce((sum,c)=>sum+Math.max(0,Number(c.votes)||0),0);return '<article class="published-election-card"><div class="published-election-heading"><div><span class="eyebrow">'+esc(e.election_type||'ELECTION')+' · '+esc(e.counting_status||'RESULTS')+'</span><h3>'+esc(e.title)+'</h3><p>'+esc(e.party_or_jurisdiction||'')+(e.election_date?' · '+esc(e.election_date):'')+'</p></div><span class="archive-count">'+total.toLocaleString()+' votes</span></div><div class="published-candidate-list">'+cs.map(c=>'<div class="published-candidate"><span>'+esc(c.name)+'</span><strong>'+Math.max(0,Number(c.votes)||0).toLocaleString()+' votes'+(c.seats!==null&&c.seats!==undefined?' · '+Number(c.seats)+' seats':'')+'</strong></div>').join('')+'</div>'+(e.notes?'<p class="result-explanation">'+esc(e.notes)+'</p>':'')+'<p class="nr-small">Last updated '+esc(e.updated_at?new Date(e.updated_at).toLocaleString():'')+'</p></article>';}).join('');electionSection.hidden=false;}
- }catch(error){console.warn('TCN published feed could not be loaded',error);}
+ const partyColors={'Heritage Party':'#b21212','Progress Party':'#0144c8','Federalist Party':'#4b317c','Independent':'#615e5e'};
+ const finalStatus=e=>['Official final results','Uncontested / unopposed','Canceled / unopposed','Canceled'].includes(String(e.counting_status||''));
+ const partyOf=c=>partyColors[c.party]?c.party:'Independent';
+ const electionCard=e=>{
+  const candidates=Array.isArray(e.candidates)?e.candidates:[],total=candidates.reduce((sum,c)=>sum+Math.max(0,Number(c.votes)||0),0);
+  const winner=candidates.length?candidates.reduce((best,c)=>!best||Number(c.votes||0)>Number(best.votes||0)?c:best,null):null;
+  const finished=finalStatus(e),uncontested=String(e.counting_status||'').toLowerCase().includes('uncontested')||String(e.counting_status||'').toLowerCase().includes('unopposed');
+  const winnerPct=winner&&total?Math.max(0,Number(winner.votes)||0)/total*100:0;
+  const winnerParty=winner?partyOf(winner):'Independent',winnerColor=partyColors[winnerParty];
+  const winnerImage=winner&&winner.image_url&&/^https:\/\//i.test(winner.image_url)?'<img class="election-winner-photo" src="'+esc(winner.image_url)+'" alt="Portrait of '+esc(winner.name)+'" loading="lazy">':'<div class="election-winner-photo election-winner-placeholder" aria-hidden="true">TCN</div>';
+  const winnerBlock=finished&&winner?'<div class="election-winner-feature" style="--candidate-party:'+winnerColor+'">'+winnerImage+'<div class="election-winner-copy"><span class="election-winner-kicker">'+(uncontested?'UNCONTESTED':'WINNER')+'</span><h4>'+esc(winner.name)+'</h4><span class="election-party-pill">'+esc(winnerParty)+'</span><strong class="election-winner-share">'+(uncontested?'Unopposed':winnerPct.toFixed(1)+'%')+'</strong><span>'+Math.max(0,Number(winner.votes)||0).toLocaleString()+' votes</span></div></div>':'';
+  const rows=candidates.map(c=>{const votes=Math.max(0,Number(c.votes)||0),pct=total?votes/total*100:0,party=partyOf(c),color=partyColors[party],img=c.image_url&&/^https:\/\//i.test(c.image_url)?'<img class="election-candidate-photo" src="'+esc(c.image_url)+'" alt="" loading="lazy">':'<span class="election-candidate-photo election-candidate-placeholder" aria-hidden="true">TCN</span>';return '<article class="election-candidate-row" style="--candidate-party:'+color+'">'+img+'<div class="election-candidate-main"><div class="election-candidate-name-line"><strong>'+esc(c.name)+'</strong><span class="election-party-pill">'+esc(party)+'</span></div><div class="election-vote-bar"><span style="width:'+pct.toFixed(2)+'%;background:'+color+'"></span></div><span class="election-candidate-meta">'+votes.toLocaleString()+' votes · '+pct.toFixed(1)+'%'+(c.seats!==null&&c.seats!==undefined?' · '+Number(c.seats)+' seats':'')+'</span></div></article>';}).join('');
+  return '<article class="published-election-card '+(finished?'is-complete':'is-live')+'"><div class="published-election-heading"><div><span class="eyebrow">'+esc(e.election_type||'ELECTION')+' · '+esc(e.counting_status||'RESULTS')+'</span><h3>'+esc(e.title)+'</h3><p>'+esc(e.party_or_jurisdiction||'')+(e.election_date?' · '+esc(e.election_date):'')+'</p></div><span class="archive-count">'+total.toLocaleString()+' total votes</span></div>'+winnerBlock+'<div class="published-candidate-list">'+rows+'</div>'+(e.notes?'<p class="result-explanation">'+esc(e.notes)+'</p>':'')+'<p class="nr-small">Last updated '+esc(e.updated_at?new Date(e.updated_at).toLocaleString():'')+'</p></article>';
+ };
+ let loading=false;
+ async function refreshFeed(){
+  if(loading)return;loading=true;
+  try{
+   const response=await fetch('published-content.json?refresh='+Date.now(),{cache:'no-store'});if(!response.ok)return;
+   const feed=await response.json(),articles=Array.isArray(feed.articles)?feed.articles:[],elections=Array.isArray(feed.elections)?feed.elections:[];
+   const publicArticles=articles.filter(a=>a&&a.headline);
+   storyIndex.splice(0,storyIndex.length,...publicArticles.map(a=>({title:a.headline,category:a.category||'TOP STORIES',summary:a.summary||'',url:'published-articles/'+slugify(a.headline)+'-'+String(a.id||'').replace(/[^a-zA-Z0-9-]/g,'').slice(0,8)+'.html'})));
+   const card=a=>{const id=String(a.id||'').replace(/[^a-zA-Z0-9-]/g,'').slice(0,8),url='published-articles/'+slugify(a.headline)+'-'+id+'.html',image=a.image_url&&/^https:\/\//i.test(a.image_url)?'<img src="'+esc(a.image_url)+'" alt="" loading="lazy">':'';return '<article class="story-card"><a class="published-card-image" href="'+url+'">'+image+'</a><div class="story-card-content"><div class="story-meta"><span class="category">'+esc(a.category||'TOP STORIES')+'</span></div><h3><a href="'+url+'">'+esc(a.headline)+'</a></h3><p>'+esc(a.summary||'')+'</p><span class="byline">'+esc(a.byline||'TCN NEWSROOM')+'</span></div></article>';};
+   const page=(location.pathname.split('/').pop()||'index.html').toLowerCase(),desk=page==='world.html'?'world':page==='politics.html'?'politics':page==='elections.html'?'elections':'';
+   const matching=publicArticles.filter(a=>!desk||norm(a.category)===desk),deskRoot=document.getElementById('managed-desk-stories');
+   if(deskRoot)deskRoot.innerHTML=matching.length?matching.map(card).join(''):'<p class="managed-empty">No articles have been published in this section yet. Publish one from the newsroom.</p>';
+   const topRoot=document.getElementById('managed-top-stories');if(topRoot){const top=publicArticles.filter(a=>norm(a.category)==='topstories');topRoot.innerHTML=top.length?top.slice(0,6).map(card).join(''):'<p class="managed-empty">No Top Stories have been published yet. Choose “Top Stories” as the desk when writing an article.</p>';}
+   const allRoot=document.getElementById('managed-all-stories');if(allRoot)allRoot.innerHTML=publicArticles.length?publicArticles.slice(0,18).map(card).join(''):'<p class="managed-empty">Published newsroom articles will appear here automatically.</p>';
+   if(searchInput)renderSearch(searchInput.value||'');
+   const electionSection=document.getElementById('newsroom-live-elections'),electionRoot=document.getElementById('published-election-results');
+   if(electionSection&&electionRoot){
+    electionSection.hidden=!elections.length;
+    if(elections.length){
+     const live=elections.filter(e=>!finalStatus(e)),complete=elections.filter(finalStatus);
+     electionRoot.innerHTML=(live.length?'<section class="election-results-group"><div class="section-heading section-heading-small"><div><span class="eyebrow">LIVE COUNTING</span><h3>Live Results</h3></div><p>Vote totals and percentages update automatically.</p></div>'+live.map(electionCard).join('')+'</section>':'')+(complete.length?'<section class="election-results-group completed-election-group"><div class="section-heading section-heading-small"><div><span class="eyebrow">CERTIFIED / COMPLETED</span><h3>Election Results Archive</h3></div><p>Completed elections and winning candidates.</p></div>'+complete.map(electionCard).join('')+'</section>':'');
+    }
+   }
+  }catch(error){console.warn('TCN published feed could not be loaded',error);}
+  finally{loading=false;}
+ }
+ await refreshFeed();
+ window.setInterval(refreshFeed,20000);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFeed();});
 })();
