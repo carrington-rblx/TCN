@@ -205,3 +205,42 @@ body.newsroom-body .site-header .menu-toggle {
   color:#fff!important;
   border-color:#444!important;
 }
+
+
+/* Newsroom-only contrast: keep the navigation row and all workspace copy white. */
+body.newsroom-body,
+body.newsroom-body .newsroom-shell,
+body.newsroom-body .newsroom-shell *,
+body.newsroom-body .site-header,
+body.newsroom-body .site-header *,
+body.newsroom-body .topline,
+body.newsroom-body .topline * {
+  color:#fff!important;
+}
+body.newsroom-body .nr-btn,
+body.newsroom-body .nr-btn *,
+body.newsroom-body .nr-tab,
+body.newsroom-body .nr-tab *,
+body.newsroom-body .nr-status,
+body.newsroom-body .nr-status *,
+body.newsroom-body .nr-notice,
+body.newsroom-body .nr-notice *,
+body.newsroom-body .nr-field input,
+body.newsroom-body .nr-field textarea,
+body.newsroom-body .nr-field select,
+body.newsroom-body .nr-field input::placeholder,
+body.newsroom-body .nr-field textarea::placeholder,
+body.newsroom-body .nr-table input {
+  color:#fff!important;
+}
+body.newsroom-body .nr-btn,
+body.newsroom-body .nr-tab.active { background:#fc2121!important;border-color:#fc2121!important; }
+body.newsroom-body .nr-btn.secondary,
+body.newsroom-body .nr-tab:not(.active) { background:#171717!important;border-color:#444!important; }
+body.newsroom-body .nr-btn.danger { background:#171717!important;border-color:#933!important; }
+body.newsroom-body .nr-field input,
+body.newsroom-body .nr-field textarea,
+body.newsroom-body .nr-field select,
+body.newsroom-body .nr-table input { background:#090909!important;border-color:#454545!important; }
+body.newsroom-body .nr-card,
+body.newsroom-body .nr-metric { background:#080808!important;color:#fff!important; }
