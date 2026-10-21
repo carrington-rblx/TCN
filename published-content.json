@@ -1,11 +1,40 @@
 {
-  "generated_at": "2026-10-21T00:30:19.416Z",
+  "generated_at": "2026-10-21T00:30:43.715Z",
   "articles": [],
   "elections": [
     {
+      "id": "cb9af2d6-5dc0-4570-a90e-6e5a06c3245a",
+      "title": "Mountain West (Class 2) Federal Midterm Election",
+      "election_type": "Senate",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "SXZ6000",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 57,
+          "image_url": null,
+          "party_color": "#b21212"
+        },
+        {
+          "name": "5JLaserMan",
+          "party": "Federalist Party",
+          "seats": null,
+          "votes": 25,
+          "image_url": null,
+          "party_color": "#4b317c"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:30:40.952+00:00",
+      "updated_at": "2026-10-21T00:30:40.952+00:00"
+    },
+    {
       "id": "65535679-dc67-4d1e-b1af-57ed8b7282f5",
       "title": "Pacific (Class 2 ) Federal Midterm Election",
-      "election_type": "House",
+      "election_type": "Senate",
       "party_or_jurisdiction": "United States - Washington D.C.",
       "election_date": "2026-09-14",
       "counting_status": "Results coming in",
@@ -36,37 +65,8 @@
         }
       ],
       "notes": "",
-      "published_at": "2026-10-21T00:30:08.781+00:00",
-      "updated_at": "2026-10-21T00:30:08.781+00:00"
-    },
-    {
-      "id": "cb9af2d6-5dc0-4570-a90e-6e5a06c3245a",
-      "title": "Mountain West (Class 2) Federal Midterm Election",
-      "election_type": "House",
-      "party_or_jurisdiction": "United States - Washington D.C.",
-      "election_date": "2026-09-14",
-      "counting_status": "Official final results",
-      "candidates": [
-        {
-          "name": "SXZ6000",
-          "party": "Heritage Party",
-          "seats": null,
-          "votes": 57,
-          "image_url": null,
-          "party_color": "#b21212"
-        },
-        {
-          "name": "5JLaserMan",
-          "party": "Federalist Party",
-          "seats": null,
-          "votes": 25,
-          "image_url": null,
-          "party_color": "#4b317c"
-        }
-      ],
-      "notes": "",
-      "published_at": "2026-10-21T00:29:03.033+00:00",
-      "updated_at": "2026-10-21T00:29:03.033+00:00"
+      "published_at": "2026-10-21T00:30:30.372+00:00",
+      "updated_at": "2026-10-21T00:30:30.372+00:00"
     },
     {
       "id": "b6190280-8951-449f-b2ea-cae526a33555",
