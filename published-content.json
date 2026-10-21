@@ -1,5 +1,43 @@
 {
-  "generated_at": "2026-10-21T00:22:48.462Z",
+  "generated_at": "2026-10-21T00:23:06.888Z",
   "articles": [],
-  "elections": []
+  "elections": [
+    {
+      "id": "3d484b56-99e5-496d-9937-040ee3a2555a",
+      "title": "New England Federal Midterm Election",
+      "election_type": "House",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "Jonesvzk",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 50,
+          "image_url": null,
+          "party_color": "#b21212"
+        },
+        {
+          "name": "CoreProductions",
+          "party": "Progress Party",
+          "seats": null,
+          "votes": 49,
+          "image_url": null,
+          "party_color": "#0144c8"
+        },
+        {
+          "name": "femboyaims",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 7,
+          "image_url": null,
+          "party_color": "#b21212"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:22:53.737+00:00",
+      "updated_at": "2026-10-21T00:22:53.737+00:00"
+    }
+  ]
 }
