@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T00:25:52.065Z",
+  "generated_at": "2026-10-21T00:26:16.622Z",
   "articles": [],
   "elections": [
     {
@@ -13,7 +13,7 @@
         {
           "name": "Jonesvzk",
           "party": "Heritage Party",
-          "seats": 1,
+          "seats": null,
           "votes": 50,
           "image_url": null,
           "party_color": "#b21212"
@@ -21,7 +21,7 @@
         {
           "name": "CoreProductions",
           "party": "Progress Party",
-          "seats": 0,
+          "seats": null,
           "votes": 49,
           "image_url": null,
           "party_color": "#0144c8"
@@ -29,15 +29,15 @@
         {
           "name": "femboyaims",
           "party": "Heritage Party",
-          "seats": 0,
+          "seats": null,
           "votes": 7,
           "image_url": null,
           "party_color": "#b21212"
         }
       ],
       "notes": "",
-      "published_at": "2026-10-21T00:25:40.444+00:00",
-      "updated_at": "2026-10-21T00:25:40.444+00:00"
+      "published_at": "2026-10-21T00:26:02.938+00:00",
+      "updated_at": "2026-10-21T00:26:02.938+00:00"
     },
     {
       "id": "ad80eae4-f21f-4d67-ade1-4d4466ef027f",
