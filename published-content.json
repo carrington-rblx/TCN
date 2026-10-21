@@ -1,7 +1,44 @@
 {
-  "generated_at": "2026-10-21T00:29:13.942Z",
+  "generated_at": "2026-10-21T00:30:19.416Z",
   "articles": [],
   "elections": [
+    {
+      "id": "65535679-dc67-4d1e-b1af-57ed8b7282f5",
+      "title": "Pacific (Class 2 ) Federal Midterm Election",
+      "election_type": "House",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Results coming in",
+      "candidates": [
+        {
+          "name": "Mr_Vgy",
+          "party": "Progress Party",
+          "seats": null,
+          "votes": 46,
+          "image_url": null,
+          "party_color": "#0144c8"
+        },
+        {
+          "name": "AlbertPGrantham",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 42,
+          "image_url": null,
+          "party_color": "#b21212"
+        },
+        {
+          "name": "voodoowarfare",
+          "party": "Federalist Party",
+          "seats": null,
+          "votes": 6,
+          "image_url": null,
+          "party_color": "#4b317c"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:30:08.781+00:00",
+      "updated_at": "2026-10-21T00:30:08.781+00:00"
+    },
     {
       "id": "cb9af2d6-5dc0-4570-a90e-6e5a06c3245a",
       "title": "Mountain West (Class 2) Federal Midterm Election",
