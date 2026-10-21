@@ -1,5 +1,27 @@
 {
-  "generated_at": "2026-10-20T18:16:08.403Z",
+  "generated_at": "2026-10-21T00:22:02.639Z",
   "articles": [],
-  "elections": []
+  "elections": [
+    {
+      "id": "3d484b56-99e5-496d-9937-040ee3a2555a",
+      "title": "New England Federal Midterm Election",
+      "election_type": "House",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "Jonesvzk",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 50,
+          "image_url": null,
+          "party_color": "#b21212"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:21:49.059+00:00",
+      "updated_at": "2026-10-21T00:21:49.059+00:00"
+    }
+  ]
 }
