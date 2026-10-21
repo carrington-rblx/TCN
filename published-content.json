@@ -1,7 +1,44 @@
 {
-  "generated_at": "2026-10-21T00:25:24.067Z",
+  "generated_at": "2026-10-21T00:25:52.065Z",
   "articles": [],
   "elections": [
+    {
+      "id": "3d484b56-99e5-496d-9937-040ee3a2555a",
+      "title": "New England (Class 2) Federal Midterm Election",
+      "election_type": "House",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "Jonesvzk",
+          "party": "Heritage Party",
+          "seats": 1,
+          "votes": 50,
+          "image_url": null,
+          "party_color": "#b21212"
+        },
+        {
+          "name": "CoreProductions",
+          "party": "Progress Party",
+          "seats": 0,
+          "votes": 49,
+          "image_url": null,
+          "party_color": "#0144c8"
+        },
+        {
+          "name": "femboyaims",
+          "party": "Heritage Party",
+          "seats": 0,
+          "votes": 7,
+          "image_url": null,
+          "party_color": "#b21212"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:25:40.444+00:00",
+      "updated_at": "2026-10-21T00:25:40.444+00:00"
+    },
     {
       "id": "ad80eae4-f21f-4d67-ade1-4d4466ef027f",
       "title": "Great Lakes (Class 2) Federal Midterm Election",
@@ -38,43 +75,6 @@
       "notes": "",
       "published_at": "2026-10-21T00:25:11.492+00:00",
       "updated_at": "2026-10-21T00:25:11.492+00:00"
-    },
-    {
-      "id": "3d484b56-99e5-496d-9937-040ee3a2555a",
-      "title": "New England Federal Midterm Election",
-      "election_type": "House",
-      "party_or_jurisdiction": "United States - Washington D.C.",
-      "election_date": "2026-09-14",
-      "counting_status": "Official final results",
-      "candidates": [
-        {
-          "name": "Jonesvzk",
-          "party": "Heritage Party",
-          "seats": null,
-          "votes": 50,
-          "image_url": null,
-          "party_color": "#b21212"
-        },
-        {
-          "name": "CoreProductions",
-          "party": "Progress Party",
-          "seats": null,
-          "votes": 49,
-          "image_url": null,
-          "party_color": "#0144c8"
-        },
-        {
-          "name": "femboyaims",
-          "party": "Heritage Party",
-          "seats": null,
-          "votes": 7,
-          "image_url": null,
-          "party_color": "#b21212"
-        }
-      ],
-      "notes": "",
-      "published_at": "2026-10-21T00:22:53.737+00:00",
-      "updated_at": "2026-10-21T00:22:53.737+00:00"
     }
   ]
 }
