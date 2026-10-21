@@ -1,7 +1,44 @@
 {
-  "generated_at": "2026-10-21T00:32:45.050Z",
+  "generated_at": "2026-10-21T00:33:48.486Z",
   "articles": [],
   "elections": [
+    {
+      "id": "65535679-dc67-4d1e-b1af-57ed8b7282f5",
+      "title": "Pacific (Class 2 ) Federal Midterm Election",
+      "election_type": "Senate",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "Mr_Vgy",
+          "party": "Progress Party",
+          "seats": null,
+          "votes": 46,
+          "image_url": null,
+          "party_color": "#0144c8"
+        },
+        {
+          "name": "AlbertPGrantham",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 42,
+          "image_url": null,
+          "party_color": "#b21212"
+        },
+        {
+          "name": "voodoowarfare",
+          "party": "Federalist Party",
+          "seats": null,
+          "votes": 6,
+          "image_url": null,
+          "party_color": "#4b317c"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:33:35.303+00:00",
+      "updated_at": "2026-10-21T00:33:35.303+00:00"
+    },
     {
       "id": "b6190280-8951-449f-b2ea-cae526a33555",
       "title": "Carolina (Class 2) Federal Midterm Election",
@@ -141,43 +178,6 @@
       "notes": "",
       "published_at": "2026-10-21T00:30:40.952+00:00",
       "updated_at": "2026-10-21T00:30:40.952+00:00"
-    },
-    {
-      "id": "65535679-dc67-4d1e-b1af-57ed8b7282f5",
-      "title": "Pacific (Class 2 ) Federal Midterm Election",
-      "election_type": "Senate",
-      "party_or_jurisdiction": "United States - Washington D.C.",
-      "election_date": "2026-09-14",
-      "counting_status": "Results coming in",
-      "candidates": [
-        {
-          "name": "Mr_Vgy",
-          "party": "Progress Party",
-          "seats": null,
-          "votes": 46,
-          "image_url": null,
-          "party_color": "#0144c8"
-        },
-        {
-          "name": "AlbertPGrantham",
-          "party": "Heritage Party",
-          "seats": null,
-          "votes": 42,
-          "image_url": null,
-          "party_color": "#b21212"
-        },
-        {
-          "name": "voodoowarfare",
-          "party": "Federalist Party",
-          "seats": null,
-          "votes": 6,
-          "image_url": null,
-          "party_color": "#4b317c"
-        }
-      ],
-      "notes": "",
-      "published_at": "2026-10-21T00:30:30.372+00:00",
-      "updated_at": "2026-10-21T00:30:30.372+00:00"
     }
   ]
 }
