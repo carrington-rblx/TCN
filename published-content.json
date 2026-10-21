@@ -1,7 +1,44 @@
 {
-  "generated_at": "2026-10-21T00:31:41.528Z",
+  "generated_at": "2026-10-21T00:32:45.050Z",
   "articles": [],
   "elections": [
+    {
+      "id": "b6190280-8951-449f-b2ea-cae526a33555",
+      "title": "Carolina (Class 2) Federal Midterm Election",
+      "election_type": "Senate",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "LucasJ_Shaw",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 60,
+          "image_url": null,
+          "party_color": "#b21212"
+        },
+        {
+          "name": "gassbut",
+          "party": "Progress Party",
+          "seats": null,
+          "votes": 30,
+          "image_url": null,
+          "party_color": "#0144c8"
+        },
+        {
+          "name": "absolutealin",
+          "party": "Independent",
+          "seats": null,
+          "votes": 15,
+          "image_url": null,
+          "party_color": "#615e5e"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:32:32.794+00:00",
+      "updated_at": "2026-10-21T00:32:32.794+00:00"
+    },
     {
       "id": "ad80eae4-f21f-4d67-ade1-4d4466ef027f",
       "title": "Great Lakes (Class 2) Federal Midterm Election",
@@ -75,43 +112,6 @@
       "notes": "",
       "published_at": "2026-10-21T00:31:10.532+00:00",
       "updated_at": "2026-10-21T00:31:10.532+00:00"
-    },
-    {
-      "id": "b6190280-8951-449f-b2ea-cae526a33555",
-      "title": "Carolina (Class 2) Federal Midterm Election",
-      "election_type": "Senate",
-      "party_or_jurisdiction": "United States - Washington D.C.",
-      "election_date": "2026-09-14",
-      "counting_status": "Results coming in",
-      "candidates": [
-        {
-          "name": "LucasJ_Shaw",
-          "party": "Heritage Party",
-          "seats": null,
-          "votes": 60,
-          "image_url": null,
-          "party_color": "#b21212"
-        },
-        {
-          "name": "gassbut",
-          "party": "Progress Party",
-          "seats": null,
-          "votes": 30,
-          "image_url": null,
-          "party_color": "#0144c8"
-        },
-        {
-          "name": "absolutealin",
-          "party": "Independent",
-          "seats": null,
-          "votes": 15,
-          "image_url": null,
-          "party_color": "#615e5e"
-        }
-      ],
-      "notes": "",
-      "published_at": "2026-10-21T00:30:57.971+00:00",
-      "updated_at": "2026-10-21T00:30:57.971+00:00"
     },
     {
       "id": "cb9af2d6-5dc0-4570-a90e-6e5a06c3245a",
