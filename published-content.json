@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T00:28:30.355Z",
+  "generated_at": "2026-10-21T00:29:13.942Z",
   "articles": [],
   "elections": [
     {
@@ -17,11 +17,19 @@
           "votes": 57,
           "image_url": null,
           "party_color": "#b21212"
+        },
+        {
+          "name": "5JLaserMan",
+          "party": "Federalist Party",
+          "seats": null,
+          "votes": 25,
+          "image_url": null,
+          "party_color": "#4b317c"
         }
       ],
       "notes": "",
-      "published_at": "2026-10-21T00:28:18.576+00:00",
-      "updated_at": "2026-10-21T00:28:18.576+00:00"
+      "published_at": "2026-10-21T00:29:03.033+00:00",
+      "updated_at": "2026-10-21T00:29:03.033+00:00"
     },
     {
       "id": "b6190280-8951-449f-b2ea-cae526a33555",
