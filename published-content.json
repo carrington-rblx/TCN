@@ -1,7 +1,28 @@
 {
-  "generated_at": "2026-10-21T00:27:46.960Z",
+  "generated_at": "2026-10-21T00:28:30.355Z",
   "articles": [],
   "elections": [
+    {
+      "id": "cb9af2d6-5dc0-4570-a90e-6e5a06c3245a",
+      "title": "Mountain West (Class 2) Federal Midterm Election",
+      "election_type": "House",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "SXZ6000",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 57,
+          "image_url": null,
+          "party_color": "#b21212"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:28:18.576+00:00",
+      "updated_at": "2026-10-21T00:28:18.576+00:00"
+    },
     {
       "id": "b6190280-8951-449f-b2ea-cae526a33555",
       "title": "Carolina (Class 2) Federal Midterm Election",
