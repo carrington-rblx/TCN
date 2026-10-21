@@ -1,7 +1,44 @@
 {
-  "generated_at": "2026-10-21T00:23:06.888Z",
+  "generated_at": "2026-10-21T00:24:42.614Z",
   "articles": [],
   "elections": [
+    {
+      "id": "ad80eae4-f21f-4d67-ade1-4d4466ef027f",
+      "title": "Great Lakes Federal Midterm Election",
+      "election_type": "House",
+      "party_or_jurisdiction": "United States - Washington D.C.",
+      "election_date": "2026-09-14",
+      "counting_status": "Official final results",
+      "candidates": [
+        {
+          "name": "ArthurtSanford",
+          "party": "Progress Party",
+          "seats": null,
+          "votes": 51,
+          "image_url": null,
+          "party_color": "#0144c8"
+        },
+        {
+          "name": "Nathaniel68542",
+          "party": "Heritage Party",
+          "seats": null,
+          "votes": 45,
+          "image_url": null,
+          "party_color": "#b21212"
+        },
+        {
+          "name": "facilityuardbvo",
+          "party": "Independent",
+          "seats": null,
+          "votes": 6,
+          "image_url": null,
+          "party_color": "#615e5e"
+        }
+      ],
+      "notes": "",
+      "published_at": "2026-10-21T00:24:29.845+00:00",
+      "updated_at": "2026-10-21T00:24:29.845+00:00"
+    },
     {
       "id": "3d484b56-99e5-496d-9937-040ee3a2555a",
       "title": "New England Federal Midterm Election",
